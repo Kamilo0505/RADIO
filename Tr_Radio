@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADIO BY ðŸ‡¹ðŸ‡·ðŸ‡¹ðŸ‡·ðŸ…ºðŸ…°ðŸ…¼ðŸ…¸ðŸ…»ðŸ‡¹ðŸ‡·ðŸ‡¹ðŸ‡·</title>
+    <style>
+        :root {
+            --primary: #E30A17; /* TÃ¼rkisch Rot */
+            --secondary: #c40915;
+            --accent: #FFD700; /* TÃ¼rkisch Gold */
+            --bg-dark: #1a1a2e;
+            --bg-darker: #0d0d1a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: white;
+            --text-muted: #aaa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+            color: var(--text);
+            min-height: 100vh;
+            padding-top: 120px;
+            line-height: 1.6;
+        }
+        
+        /* HEADER MIT TÃœRKISCHEM LOGO */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 20, 0.98);
+            padding: 15px 20px;
+            border-bottom: 3px solid var(--primary);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .logo-turkish {
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .stats {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: right;
+        }
+        
+        /* PLAYER */
+        .player {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--primary);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .player-info {
+            flex: 1;
+            overflow: hidden;
+            margin-left: 15px;
+        }
+        
+        .current-station {
+            font-weight: bold;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--accent);
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .station-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 3px 10px rgba(227, 10, 23, 0.4);
+        }
+        
+        /* SUCHLEISTE */
+        .search-container {
+            max-width: 800px;
+            margin: 30px auto;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 18px 60px 18px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 20px rgba(227, 10, 23, 0.5);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 22px;
+        }
+        
+        /* HAUPTTITEL TÃœRKISCHE SENDER */
+        .main-title {
+            text-align: center;
+            margin: 20px auto 30px;
+            padding: 0 20px;
+        }
+        
+        .main-title h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .main-title .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        /* STATIONS GRID */
+        .stations-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 0 20px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .station-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .station-card:hover {
+            background: rgba(227, 10, 23, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(227, 10, 23, 0.2);
+        }
+        
+        .station-card img {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        
+        .station-info {
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .station-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--accent);
+        }
+        
+        .station-country {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .play-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        
+        .play-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .play-btn.playing {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        /* COUNTER */
+        .counter {
+            text-align: center;
+            margin: 20px auto;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        /* LOADING & STATUS */
+        .loading {
+            display: none;
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+        }
+        
+        .volume-slider {
+            width: 100px;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* NO RESULTS */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 15px;
+            }
+            
+            .logo-text {
+                font-size: 1.4rem;
+            }
+            
+            .main-title h1 {
+                font-size: 2rem;
+            }
+            
+            .stations-container {
+                grid-template-columns: 1fr;
+                padding: 0 15px 30px;
+            }
+            
+            .search-container {
+                padding: 0 15px;
+            }
+            
+            .volume-control {
+                display: none;
+            }
+            
+            .player {
+                padding: 10px 15px;
+            }
+            
+            body {
+                padding-top: 140px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-start;
+            }
+            
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            
+            .stats {
+                display: none;
+            }
+            
+            .station-card {
+                padding: 15px;
+            }
+            
+            .station-name {
+                font-size: 1rem;
+            }
+            
+            .main-title h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER MIT TÃœRKISCHEM LOGO -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-turkish">ðŸ‡¹ðŸ‡·</div>
+            <div class="logo-text">RADIO BY ðŸ‡¹ðŸ‡·ðŸ‡¹ðŸ‡·ðŸ…ºðŸ…°ðŸ…¼ðŸ…¸ðŸ…»ðŸ‡¹ðŸ‡·ðŸ‡¹ðŸ‡·</div>
+            <div class="logo-turkish">ðŸ‡¹ðŸ‡·</div>
+        </div>
+        <div class="stats" id="total-stats">0 Sender geladen</div>
+    </div>
+    
+    <!-- PLAYER -->
+    <div class="player" id="player">
+        <img id="current-logo" class="station-logo" src="https://img.icons8.com/color/96/radio.png" alt="Logo">
+        <div class="player-info">
+            <div class="current-station" id="current-station">Sender auswÃ¤hlen</div>
+            <div class="status" id="player-status">TÃ¼rk Radio</div>
+        </div>
+        <div class="player-controls">
+            <button class="control-btn" id="play-btn">â–¶</button>
+            <div class="loading" id="loading"></div>
+            <div class="volume-control">
+                <span>ðŸ”Š</span>
+                <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-slider" id="volume">
+            </div>
+        </div>
+    </div>
+    
+    <!-- HAUPTTITEL -->
+    <div class="main-title">
+        <h1>TÃœRK RADYO SENDER</h1>
+        <div class="subtitle">TÃ¼m TÃ¼rk radyo istasyonlarÄ± burada!</div>
+    </div>
+    
+    <!-- SUCHLEISTE -->
+    <div class="search-container">
+        <input type="text" class="search-input" id="search-input" placeholder="Radyo ara (Ã¶rn: Kral, Pop, Arabesk, TÃ¼rkÃ¼, FM)">
+        <div class="search-icon">ðŸ”</div>
+    </div>
+    
+    <!-- TÃœRKISCHE SENDER -->
+    <div class="counter" id="turkish-counter">YÃ¼kleniyor...</div>
+    <div class="stations-container" id="turkish-stations"></div>
+    
+    <!-- AUDIO -->
+    <audio class="audio-control" id="audio-player" preload="none"></audio>
+
+    <script>
+        // TÃœRKISCHE SENDER - KOMPLETTE LISTE AUS DEINER M3U
+        const turkishStations = [
+            { name: "Radyo 7", logo: "https://cdn.kanal7.com/radyo7//application/assets/home/common/images/apple-touch-icon-114x114.png", url: "http://46.20.3.250/;stream" },
+            { name: "Slow Turk", logo: "https://www.slowturk.com.tr/_next/image?url=https%3A%2F%2Fassets.blupoint.io%2Fimg%2F85%2F330x175%2F6410d8c4310c17000763c62b&w=256&q=75", url: "https://radyo.duhnet.tv/ak_dtvh_slowturk" },
+            { name: "Power POP", logo: "https://www.powerapp.com.tr/i/favicov2/apple-icon-120x120.png?v=817", url: "https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8" },
+            { name: "KRAL FM", logo: "https://cdn1.kralmuzik.com.tr/media/content/19-05/17/kralfm.png", url: "https://dygedge2.radyotvonline.net/kralfm/playlist.m3u8?listenerid=29d0a6a85b59cea2ca801b70d2a3ebaf&awparams=companionAds%3Atrue" },
+            { name: "DAMAR TURK FM", logo: "https://www.damarturkfm.com/favicon.ico", url: "https://live.radyositesihazir.com:10997/" },
+            { name: "Arabesk FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.arabeskfm.biz:8042/" },
+            { name: "SÃ¼per FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://29023.live.streamtheworld.com:3690/SUPER_FMAAC_SC" },
+            { name: "Virgin Radio TÃ¼rkiye", logo: "https://i.karnavalcdn.com/media/site_media/icons/android-icon-192x192.png", url: "http://29103.live.streamtheworld.com/VIRGIN_RADIO_SC" },
+            { name: "Super Fm", logo: "https://superfm.com.tr/favicon.ico", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER_FM_SC" },
+            { name: "TÃ¼rkÃ¼lerle TÃ¼rkiye", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/22/;" },
+            { name: "Radyo 45lik yeni", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "90lar turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/166/" },
+            { name: "Metro FM", logo: "https://metrofm.com.tr/favicon.ico", url: "http://28503.live.streamtheworld.com:3690/METRO_FMAAC_SC" },
+            { name: "Ankara Havalari", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/;" },
+            { name: "Alem FM", logo: "https://www.alemfm.com/assets/img/alemfm-apple-touch-icon.png", url: "http://turkmedya.radyotvonline.com/turkmedya/alemfm.stream/playlist.m3u8" },
+            { name: "Baba Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://46.20.7.116/" },
+            { name: "Kafa Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/kafaradyo/playlist.m3u8" },
+            { name: "JOY TÃœRK TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/JOY_TURK_SC?/" },
+            { name: "Damar Turk FM", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAlkZWbK47GUO6iQFP2yohP0z_5X3WpdjdMQ&s=0", url: "https://live.radyositesihazir.com:10997/;" },
+            { name: "KRAL TÃœRK FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyositesihazir.com/8032/stream" },
+            { name: "Radyo Turkuvaz", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/radyoturkuvaz/playlist.m3u8" },
+            { name: "Radyo Alaturka", logo: "https://radyoalaturka.com.tr/site/assets/img/alaturkaLogo.png", url: "https://yayin.jumboserver.net:9100/stream" },
+            { name: "POWER TÃœRK FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.powerapp.com.tr/powerturk/abr/powerturk/128/playlist.m3u8" },
+            { name: "TRT3", logo: "https://cdn-i.pr.trt.com.tr/trtdinle//w360/q70/12467462.jpeg", url: "http://rd-trtradyo3.medya.trt.com.tr/master.m3u8" },
+            { name: "PAL Nostalji", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/palnostalji/playlist.m3u8" },
+            { name: "Radyo Fenomen", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomen/128/icecast.audio" },
+            { name: "pop 90 turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "http://23623.live.streamtheworld.com:3690/POP90AAC_SC" },
+            { name: "TRT TÃ¼rkÃ¼", logo: "https://img.icons8.com/color/96/radio.png", url: "https://rd-trtturku.medya.trt.com.tr/master_128.m3u8" },
+            { name: "Radyo Seymen", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.radyoseymen.com.tr:1070/stream" },
+            { name: "102.1 Arabeskin Merkezi Fm", logo: "https://images.keepone.net/1376-2022-10-17.png", url: "http://canli.arabeskinmerkezi.com:9180/stream" },
+            { name: "Joy Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://22193.live.streamtheworld.com:3690/JOY_FMAAC_SC" },
+            { name: "ALTIN ÅžARKILAR", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/25/;" },
+            { name: "Turku Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyo.turkuradyo.net:4591/turkuradyo" },
+            { name: "Virgin Radio TÃ¼rkiye", logo: "https://img.icons8.com/color/96/radio.png", url: "http://28033.live.streamtheworld.com/VIRGIN_RADIOAAC_SC" },
+            { name: "Radyo Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagewmp.radyotvonline.com/;stream.mp3" },
+            { name: "Karadeniz FM", logo: "https://static.wixstatic.com/media/9477e9_88c8630d8926464eac285c1df9d8ce54~mv2.png/v1/fill/w_350,h_350,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/karadeniz-fm-logopng.png", url: "https://moondigitaledge.radyotvonline.net/karadenizfm/playlist.m3u8" },
+            { name: "DamarTurk FM", logo: "https://www.damarturkfm.com/favicon.ico", url: "https://live.radyositesihazir.com:10997/stream?type=http&nocache=99881" },
+            { name: "baba radyo", logo: "https://www.babaradyo.com/wp-content/uploads/2025/01/cropped-baba-radyo-23-180x180.png", url: "http://officialbabaradyo.radyotvonline.net/babaofficial" },
+            { name: "Radio 5 Turkey", logo: "https://radio5.com.tr/wp-content/plugins/under-construction-page/themes/images/favicon.png", url: "http://radyo.yayin.com.tr:4108/stream" },
+            { name: "Alem Fm", logo: "https://www.alemfm.com/assets/img/alemfm-apple-touch-icon.png", url: "https://turkmedya.radyotvonline.net/alemfmaac" },
+            { name: "Power FM TÃ¼rkiye", logo: "https://cdn.powergroup.com.tr/image/100x100/powerapp/channels/v3/inverse/logo_37.png?v=716", url: "https://listen.powerapp.com.tr/powerfm/256/chunks.m3u8" },
+            { name: "HabertÃ¼rk Radyo", logo: "https://www.haberturkradyo.com.tr/wp-content/uploads/2017/07/cropped-RADYO_LOGO_Son-180x180.png", url: "https://haberturkradyo.radyotvonline.net/haberturkradyo" },
+            { name: "KRAL POP ALTERNATÄ°F 2", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssldyg.radyotvonline.com/smil/smil:kralpop.smil/playlist.m3u8" },
+            { name: "Havin FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin6.radyohizmeti.com:7050/;stream.mp3" },
+            { name: "KRAL FM", logo: "https://www.kralmuzik.com.tr/app/themes/kral/assets/images/kralmuzik_logo.png?v=2", url: "https://dygedge2.radyotvonline.net/kralfm/playlist.m3u8" },
+            { name: "Park Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:8050/PARKFM/" },
+            { name: "TRT NAÄžME", logo: "https://cdn-i.pr.trt.com.tr/trtdinle//w768/q70/12467465.jpeg", url: "https://tv-trtmuzik.medya.trt.com.tr/master_720.m3u8" },
+            { name: "TRT Radyo 1", logo: "https://static.wikia.nocookie.net/logopedia/images/2/27/TRT_Radyo_1_logo.svg/revision/latest/scale-to-width-down/300?cb=20211026160210", url: "https://trt.radyotvonline.net/trt1" },
+            { name: "ALEM FM", logo: "https://www.alemfm.com/assets/img/alemfm-apple-touch-icon.png", url: "https://edge1.radyotvonline.net/shoutcast/play/alemfm" },
+            { name: "TÃ¼rkÃ¼ Radyo", logo: "https://www.turkuradyo.info/public/default/images/upload/1190220421012000.png", url: "https://eu8.fastcast4u.com/proxy/ugur4129?mp=/1" },
+            { name: "AÅŸk FM", logo: "https://www.radyoreklamankara.com/wp-content/uploads/2016/05/aÅŸk-fm-300x300.png", url: "http://yayin.asymedya.com:8020/;" },
+            { name: "TRT FM", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/dd24ba9f-7f22-4b79-a226-9704169bd953.png", url: "https://trt.radyotvonline.net/trtfm" },
+            { name: "Akra FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://d3r5bwwuab2v60.cloudfront.net/akracanli2/_definst_/livestream_aac/playlist.m3u8" },
+            { name: "Metro fm turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/METRO_FM_SC?" },
+            { name: "JOY TÃœRK ROCK TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/JOYTURK_ROCK_SC?/" },
+            { name: "dinamo.fm deep", logo: "https://www.dinamo.fm/favicons/dinamo-deep-favicon.jpg", url: "http://channels.dinamo.fm/deep-mp3" },
+            { name: "Radyo ILEF Ankara", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyo.cc.ankara.edu.tr:8089/;" },
+            { name: "a HABER", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/ahaberradyo/playlist.m3u8" },
+            { name: "Radyo Fenomen Clubbin", logo: "https://cdn.radyofenomen.com/artwork/logo20.png", url: "https://live.radyofenomen.com/fenomenclubbin/128/icecast.audio" },
+            { name: "Baba Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://babaradyo.turkhosted.com/best/babaradyo.stream/playlist.m3u8" },
+            { name: "Radyo Vatan TÃ¼rkÃ¼", logo: "https://img.icons8.com/color/96/radio.png", url: "http://95.0.173.195:9000/turku" },
+            { name: "Radyo Åžiran", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyositesihazir.com/8078/stream" },
+            { name: "NTV Radyo", logo: "http://www.ntvradyo.com.tr/favicon.ico", url: "http://46.20.3.207/listen.pls" },
+            { name: "dinamo.fm sleep", logo: "https://www.dinamo.fm/favicons/dinamo-sleep-favicon.jpg", url: "http://channels.dinamo.fm/sleep-mp3" },
+            { name: "SUPER FM 2 TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER2_SC?/" },
+            { name: "Turkuvaz Anadolu", logo: "https://img.icons8.com/color/96/radio.png", url: "http://trkvz-radyolar.ercdn.net/turkuvazanadolu/Playlist.m3u8" },
+            { name: "Radio 44", logo: "https://radyo44.com.tr/favicons/favicon-32x32.png", url: "https://radyo44.80.yayin.com.tr/stream" },
+            { name: "Halk Tv", logo: "https://img.icons8.com/color/96/tv.png", url: "https://halktv.daioncdn.net/halktv/halktv_1080p.m3u8?sid=6vahxsup0jxl&app=c86957d3-74a7-44da-9ad2-dc358c769609&ce=3" },
+            { name: "KRAL POP", logo: "https://cdn1.kralmuzik.com.tr/media/content/19-05/20/kralpop.png", url: "https://dygedge2.radyotvonline.net/kralfm/playlist.m3u8" },
+            { name: "Turkuaz Anadolu", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/turkuvazanadolu/playlist.m3u8" },
+            { name: "powerturk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.powerapp.com.tr/powerturk/abr/playlist.m3u8" },
+            { name: "TRT Radyo 1", logo: "https://static.wikia.nocookie.net/logopedia/images/2/27/TRT_Radyo_1_logo.svg/", url: "https://trt.radyotvonline.net/trt1" },
+            { name: "Pal station", logo: "https://palstation106.com/img/logo/pal-station.ico", url: "http://shoutcast.radyogrup.com:1020/" },
+            { name: "Joy Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://28993.live.streamtheworld.com:3690/JOY_FMAAC_SC" },
+            { name: "Radyo Ekin", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.turkhosted.com:6006/" },
+            { name: "Borusan Klasik", logo: "https://img.icons8.com/color/96/radio.png", url: "http://27783.live.streamtheworld.com/BORUSAN_KLASIKAAC_SC" },
+            { name: "EGE HAVALARI TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/egehavalari/playlist.m3u8" },
+            { name: "GÃ¶zyaÅŸÄ± FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.canliyayin.org:8700/;*.mp3" },
+            { name: "FENOMEN TÃœRK", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenturk/abr/fenomenturk/256/chunks.m3u8" },
+            { name: "FG 93.8 (Future Generation)", logo: "https://i1.sndcdn.com/avatars-6lAdUGxB5DjlvwWt-6IBY7g-t200x200.jpg", url: "https://edge1.radyotvonline.net/shoutcast/play/fg" },
+            { name: "Radyo Eksen 96.2", logo: "https://img.icons8.com/color/96/radio.png", url: "http://eksenwmp.radyotvonline.com/;stream.mp3" },
+            { name: "Ahaber", logo: "https://img.icons8.com/color/96/radio.png", url: "http://trkvz-radyolar.ercdn.net/ahaberradyo/chunklist.m3u8" },
+            { name: "dinamo.fm locodyno", logo: "https://www.dinamo.fm/favicons/dinamo-locodyno-favicon.jpg", url: "http://channels.dinamo.fm/locodyno-mp3" },
+            { name: "Erzincan Cem Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://erzincan.80.yayin.com.tr/stream" },
+            { name: "Avrasya TÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net:10909/" },
+            { name: "Hemdem Radyo", logo: "https://hemdemradyo.com/favicon.ico", url: "https://radyoserver3.okeylisans.com:8040/stream" },
+            { name: "dinamo.fm caffe", logo: "https://www.dinamo.fm/favicons/dinamo-caffe-favicon.jpg", url: "http://channels.dinamo.fm/caffe-mp3" },
+            { name: "90 lar Pop", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyolanddoksanlar/playlist.m3u8" },
+            { name: "ASPOR", logo: "https://img.icons8.com/color/96/radio.png", url: "http://trkvz-radyolar.ercdn.net/asporradyo/playlist.m3u8" },
+            { name: "Pir Yolu", logo: "http://radyopiryolu.canliyayinda.com:8165/favicon.ico", url: "http://radyopiryolu.canliyayinda.com:8165/" },
+            { name: "SÃ¼per 2 FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER2_SC.mp3" },
+            { name: "Radyo Ekin", logo: "https://www.radyoekin.net/favicon.ico", url: "https://yayin.turkhosted.com/6006/stream" },
+            { name: "Konya Ä°sra FM", logo: "https://www.canliradyodinle.fm/wp-content/uploads/isra-fm.jpg", url: "https://yayin2.canliyayin.org:8210/;stream" },
+            { name: "DamarÄ±n Merkezi Fm", logo: "https://images.keepone.net/1376-2022-10-17.png", url: "http://canli.arabeskinmerkezi.com:9180/stream" },
+            { name: "radyo mezopotamya", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr/9404/stream" },
+            { name: "Loops Radio House Station", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://loopsdeep.ozelip.com/7806/stream" },
+            { name: "Radyo Sputnik", logo: "https://cdn.img.anlatilaninotesi.com.tr/i/favicon/favicon-192x192.png", url: "https://icecast-rian.cdnvideo.ru/voicestm" },
+            { name: "Kurd1", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.radioking.com/radio/119251/stream/158701" },
+            { name: "Radyo D", logo: "https://cdn-radiotime-logos.tunein.com/s14264d.png", url: "https://moondigitaledge2.radyotvonline.net/radyod/playlist.m3u8" },
+            { name: ".Al quran radio", logo: "https://i.pinimg.com/564x/3a/a1/a1/3aa1a107c9434ca52b42b2dd0ffc896f.jpg", url: "https://n0a.radiojar.com/0tpy1h0kxtzuv?rj-ttl=5&rj-tok=AAABhdgGORQA-2acfyF3_4WY2g" },
+            { name: "ALEM FM", logo: "https://cdn.alemfm.com/resize/407x430/BroadcasterImages/alemprogramsizbuyuk.png", url: "https://edge1.radyotvonline.net/shoutcast/play/alemfm" },
+            { name: "POWER TÃœRK DANS TÃœRKÄ°YE", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerturkdans/abr/powerturkdans/128/playlist.m3u8" },
+            { name: "PowerTÃ¼rk Akustik", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerturkakustik/abr/playlist.m3u8" },
+            { name: "Dost", logo: "http://dostfm.com/favicon.ico", url: "http://yayin1.yayindakiler.com:3156/" },
+            { name: "Pal DoÄŸa", logo: "https://img.icons8.com/color/96/radio.png", url: "http://shoutcast.radyogrup.com:1040/;*.mp3" },
+            { name: "Radyo Munzur 97.7", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3002/;stream.nsv" },
+            { name: "Power Dance", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerdance/mpeg/icecast.audio" },
+            { name: "Fakir Fm", logo: "https://www.fakirfm.com/favicon.ico", url: "https://live.radyositesihazir.com/1025/stream/" },
+            { name: "Tezene", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/22/.mp3?%26token=Bsx3vK2u28-xMp98IZDV2Q%26expires=1618686860%27%20type=%27audio/mp3%27&rd2=%27https://radyo.vip/stream" },
+            { name: "Enderun FM", logo: "https://enderunfm.com/wp-content/uploads/2023/07/cropped-enderun_fm-180x180.png", url: "http://yayin2.canliyayin.org:7052/;*.mp3" },
+            { name: "TRT TSR", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/4eee676f-ab62-437e-85ba-38855d7bd904.png", url: "https://radio-trttsr.medya.trt.com.tr/master.m3u8" },
+            { name: "Radyo 35", logo: "https://www.radyo35.com/img/logo.png", url: "https://yayin.turkhosted.com/6012/stream" },
+            { name: "Semerkand Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mtisvwurbfcyslive.mediatriple.net/mtisvwurbfcyslive/broadcast_58e23cb112296.smil/playlist.m3u8" },
+            { name: "dinamo.fm discotheque", logo: "https://www.dinamo.fm/favicons/dinamo-disco-favicon.jpg", url: "http://channels.dinamo.fm/discotheque-mp3" },
+            { name: "Loops Radio Techno", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://ip179.ozelip.com/7688//asistan/stream/" },
+            { name: "Can Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3124/;" },
+            { name: "TRT Trabzon", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/da27e57f-8cc2-4c2b-ad46-a90350e38f14.png", url: "https://radio-trttrabzon.medya.trt.com.tr/master.m3u8" },
+            { name: "Dost FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.dostfm.com:8920/;.mp3?no_dl" },
+            { name: "Radyo Duygusal", logo: "https://radyoduygusal.com/uploads/favicon/oooooooo.jpg", url: "https://radyoduygusal.kesintisizyayin.com:9596/;*.nsv" },
+            { name: "HOUSELAND TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/houseland/playlist.m3u8" },
+            { name: "Powerturk R&B Hip Hop", logo: "https://www.powerapp.com.tr/i/favicov2/apple-icon-120x120.png?v=843", url: "https://listen.powerapp.com.tr/powerrbhiphop/abr/playlist.m3u8" },
+            { name: "Pal Fm", logo: "http://www.palfm.com.tr/img/logo/pal-fm.ico", url: "https://ssl4.radyotvonline.com/radyohome/palfmhome.stream/playlist.m3u8" },
+            { name: "S1lhoutte Arabesk FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.radyoarabesk.com.tr:8000/stream" },
+            { name: "Ä°TÃœ Klasik", logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic-media.streema.com%2Fmedia%2Fcache%2F67%2F92%2F67927d9794c4535218ca4dfc85e58c1c.jpg&f=1&nofb=1&ipt=199dd090ea0b2d9b521c7b84cc0e2838c2b42aacd8a2ff4a04f2ea06a32ae0b6", url: "http://160.75.86.29:8088/ituklasikmp3" },
+            { name: "retro turk", logo: "https://img.icons8.com/color/96/radio.png", url: "http://27783.live.streamtheworld.com:3690/RETROTURKAAC_SC" },
+            { name: "Ribat FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.canliyayin.org:7010/;*.mp3" },
+            { name: "EFSANE 4LÃœ TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/efsane4lu/playlist.m3u8" },
+            { name: "Diyanet Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://eustr73.mediatriple.net/videoonlylive/mtikoimxnztxlive/broadcast_5e3c1171d7d2a.smil/playlist.m3u8" },
+            { name: "Max FM", logo: "https://maxfm.com.tr/favicon.ico", url: "http://live2.radyotvonline.com:8025/" },
+            { name: "BAYRAM FM TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/3442/stream" },
+            { name: "Radyo ODTU", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radyoodtu.com.tr/;" },
+            { name: "TRT Radyo Haber", logo: "https://cdn-i.pr.trt.com.tr/trtdinle//w410/h315/q70/12530424_0-0-2048-1536.jpeg", url: "https://radio-trtradyohaber.live.trt.com.tr/master.m3u8" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.mp3" },
+            { name: "lokum fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.9/stream/493/?/;stream.mp3" },
+            { name: "Gundi FM", logo: "https://yt3.ggpht.com/ytc/AKedOLSnbp3j7UCOUCra41mcQXEaeuobWPad1G7bwOsZDw=s900-c-k-c0x00ffffff-no-rj", url: "http://gundifm.ozelip.com:7830/;" },
+            { name: "FENOMEN KARISIK", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenkarisik/abr/fenomenkarisik/128/chunks.m3u8" },
+            { name: "Radyo Trafik 104.2 Ankara", logo: "http://www.otomobil.com.tr/wp-content/uploads/2012/04/RADYO_TRAFIK_1.jpg", url: "http://live2.radyotvonline.com:8000/" },
+            { name: "RADYO 42 FM MEDYA KONYA PR MUSIC TURKIYE", logo: "https://www.radio.net/300/radio-42-fm-medya-konya-pr-music.png", url: "https://a8.asurahosting.com/hls/radyo_42_fm_medya_konya_pr_music/live.m3u8" },
+            { name: "Dost Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3156/;" },
+            { name: "RS FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://nfw.video.ria.ru/flv/audio.aspx?ID=99244423&type=mp3" },
+            { name: "Kurd1 FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.radioking.com/radio/119251/stream/158701" },
+            { name: "Numberone Turk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/numberoneturk" },
+            { name: "dinamo.fm deep", logo: "https://www.dinamo.fm/favicons/dinamo-deep-favicon.jpg", url: "http://channels.dinamo.fm/deep-mp3" },
+            { name: "JoyTÃ¼rk Rock", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4-DbiEWpWrOXoAn7dYihxUrwemOvxre5n5g&s=0", url: "http://21633.live.streamtheworld.com/JOYTURK_ROCK128AAC.aac?/;stream.mp3" },
+            { name: "TGRT FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://icecasttgrt.ihlasdigitalassets.com/tgrtfm" },
+            { name: "POWERTÃœRK FM TURKEY 2", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.powerapp.com.tr/powerturk/abr/powerturk/128/playlist.m3u8" },
+            { name: "Radyo Seymen", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.radyoseymen.com.tr:1070/stream" },
+            { name: "Diyanet Kur'an Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://eustr73.mediatriple.net/videoonlylive/mtikoimxnztxlive/broadcast_5e3c14192aa92.smil/playlist.m3u8" },
+            { name: "JoyTÃ¼rk Akustik", logo: "https://img.icons8.com/color/96/radio.png", url: "http://playerservices.streamtheworld.com/api/livestream-redirect/JOYTURK_AKUSTIK128AAC.aac" },
+            { name: "Radyo Slow Time", logo: "https://img.icons8.com/color/96/radio.png", url: "http://46.20.7.103:8040/;" },
+            { name: "Radyo 45'lik, 1970'ler, 1980'ler ve 1990'lar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "101.1Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "(93.0) IGDIR FM", logo: "https://www.radyodinle.one/img/205x205/igdir-fm.jpg", url: "https://yayin.yayindakiler.com:4158/;" },
+            { name: "NTV Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://ntvrdwmp.radyotvonline.com/" },
+            { name: "UÄŸur Ã–ztÃ¼rk", logo: "https://www.turkuradyo.info/public/default/images/upload/1776181619061079.png", url: "https://eu8.fastcast4u.com/proxy/ugur4129?mp=/1" },
+            { name: "Radio Antalya", logo: "https://radioantalya.com/favicon.ico", url: "https://my.radiolize.com/radio/8000/radio.mp3" },
+            { name: "dinamo.fm legacy", logo: "https://www.dinamo.fm/favicons/dinamo-legacy-favicon.jpg", url: "http://channels.dinamo.fm/legacy-mp3" },
+            { name: "Azadi Fm", logo: "http://canlikurtceradyodinle.com/favicon.ico", url: "https://amed.ozelip.com/8040/;" },
+            { name: "Kiss TÃ¼rk", logo: "https://kissapp.com.tr/content/files/IIMG_BE9E7FDE-27B7-466A-BE72-C344A3DCCD4C.jpg", url: "https://kiss.radyotvonline.net/kissturk" },
+            { name: "A Haber", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/ahaberradyo/playlist.m3u8" },
+            { name: "KTU", logo: "https://www.ktu.edu.tr/image/tr_bg.png", url: "https://sslyayin.netyayin.net/radyoktu/stream/;type=mp3" },
+            { name: "Risalet Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://eustr73.mediatriple.net/videoonlylive/mtikoimxnztxlive/broadcast_5e3c1520b2626.smil/playlist.m3u8" },
+            { name: "FENOMEN POP", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenpop/abr/fenomenpop/128/chunks.m3u8" },
+            { name: "Number One TÃ¼rk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/numberoneturk" },
+            { name: "Vav Radyo", logo: "https://i.tmgrup.com.tr/vavradyo/site/v2/c/i/apple-touch-icon-new-120x120.png", url: "https://trkvz-radyolar.ercdn.net/radyovav/playlist.m3u8" },
+            { name: "Cnn TÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge2.radyotvonline.net/cnnturk/playlist.m3u8?listeningSessionID=669e367246737fe5_6249184_Zq120UIn__0000001w2Bs&downloadSessionID=0" },
+            { name: ". Abdulbasit Abdulsamad", logo: "https://mp3islam.com/favicon.ico", url: "https://radio.mp3islam.com/listen/abdulbasit/radio.mp3" },
+            { name: "Halk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10876/;" },
+            { name: "107.4 Radio Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "https://dygedge.radyotvonline.net/radyovoyage/playlist.m3u8?listenerid=29d0a6a85b59cea2ca801b70d2a3ebaf&awparams=companionAds%3Atrue" },
+            { name: "Yaren FM", logo: "https://tarsusfm.com.tr/favicon.ico", url: "https://yarenfmn.80.yayin.com.tr//stream" },
+            { name: "Radyo Odtu Easy", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream3.radyoodtu.com.tr:8000/easy" },
+            { name: "dinamo.fm smog", logo: "https://www.dinamo.fm/favicons/dinamo-smog-favicon.jpg", url: "http://channels.dinamo.fm/smog-mp3" },
+            { name: "Radyo Alevi Canlar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://alevifm.80.yayin.com.tr/" },
+            { name: "BÄ°LECÄ°K FM TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://bilecikfm.kesintisizyayin.com:9980/" },
+            { name: "Trt Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://rd-trtradyo1.medya.trt.com.tr/master_128.m3u8" },
+            { name: "HAYATMÄ°X", logo: "https://img.icons8.com/color/96/radio.png", url: "https://hayatmix.yayin.com.tr/mp3" },
+            { name: "Danceland turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/danceland/playlist.m3u8" },
+            { name: "Radyo GÃ¶kÃ§eada", logo: "https://www.radyogokceada.net/favicon.ico", url: "https://radyo.yayin.com.tr:6179/;" },
+            { name: "Moral FM", logo: "http://moralfm.com.tr/yonetim/uploads/image/logo-base-1.png", url: "https://stream-157.zeno.fm/0cfiqwdkobavv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiIwY2ZpcXdka29iYXZ2IiwiaG9zdCI6InN0cmVhbS0xNTcuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6Ik1kcEtfTUtQUm5xS3N4Mk8yXzl5YnciLCJpYXQiOjE3MzEyNzQ1ODIsImV4cCI6MTczMTI3NDY0Mn0.0eDtTzJb2qydtHkWls4Op4nmAZvg_Q9AyObMw0XOy50" },
+            { name: "Diyanet Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://eustr73.mediatriple.net/videoonlylive/mtikoimxnztxlive/broadcast_5e3c1171d7d2a.smil/playlist.m3u8" },
+            { name: "Axa Rojava", logo: "http://zeno.fm/favicon.ico", url: "https://stream.zeno.fm/h6mn2c8ha8zuv" },
+            { name: "GÄ°MSA RADYO", logo: "https://www.gimsa.com.tr/images/apple-touch-icon.png", url: "http://yayin1.canliyayin.org:9482/stream" },
+            { name: "Mio Radio", logo: "https://static.wixstatic.com/media/289b80_d3c08d5820c0a13527afed308f65aa07.jpg/v1/crop/x_59,y_22,w_273,h_236/fill/w_284,h_230,al_c,lg_1,q_80,enc_avif,quality_auto/289b80_d3c08d5820c0a13527afed308f65aa07.jpg", url: "https://s2.myradiostream.com/13662/;?type=http&nocache=1769756485?0.283950275860107" },
+            { name: "SÃ¼per Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER2_SC" },
+            { name: "Kent FM", logo: "https://static.wixstatic.com/media/9477e9_5d00a2e59e4d4bada251627401f75c91~mv2.png/v1/fill/w_150,h_114,al_c,q_85,usm_0.66_1.00_0.01/KENT_FM_LOGO.webp", url: "https://moondigitalmaster.radyotvonline.net/kentfm/playlist.m3u8" },
+            { name: "A spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/asporradyo/chunklist.m3u8" },
+            { name: "Radyo 9", logo: "https://www.radyo9.com/logo.png", url: "https://radyo.yayin.com.tr:4010/" },
+            { name: "Radyo Can", logo: "http://www.radyocan.net/favicon.ico", url: "http://yayin2.yayindakiler.com:4174/;stream.mp3" },
+            { name: "TRT Radyo Haber", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/20d0b80f-bb7a-4fcb-9a61-88662ebcb2dc.png", url: "https://trt.radyotvonline.net/trthaber" },
+            { name: "MEGASITE", logo: "https://www.megasite.com.tr/wp-content/uploads/2022/10/logo.png", url: "https://stream.netradyom.com/listen/megasite/radio.mp3" },
+            { name: "DoÄŸu Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://198.7.59.28:8146/" },
+            { name: "Tarsus FM", logo: "https://tarsusfm.com.tr/favicon.ico", url: "https://tarsusfm.80.yayin.com.tr//stream" },
+            { name: "Radyo Mori", logo: "https://img.icons8.com/color/96/radio.png", url: "https://amed.ozelip.com/8040/stream" },
+            { name: "Power love", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerlove/abr/powerlove/128/playlist.m3u8" },
+            { name: "CLASSICLAND TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/classicland/playlist.m3u8" },
+            { name: "Max Fm 95.8 Maximum Music", logo: "https://img.icons8.com/color/96/radio.png", url: "http://live2.radyotvonline.com:8025/" },
+            { name: "Erzincan Nostalji Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://erzincannostalji.ozelip.com/8238/stream" },
+            { name: "Ä°TÃœ Radyosu Rock", logo: "http://www.radyo.itu.edu.tr/Sitefinity/WebsiteTemplates/GenelTemplate/App_Themes/ITUGenelTemplate/Images/favicon.ico", url: "http://160.75.86.29:8095/" },
+            { name: "KÄ±yÄ± MÃ¼zik", logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkiyimuzik.com%2Fwp-content%2Fuploads%2F2019%2F07%2Fkiyi_radyo_logo.png&f=1&nofb=1&ipt=423a3e527aca8329cc1b4cce32694ac0cfa31811f92db41e100b719b331b0590", url: "https://kiyi.radioca.st/stream" },
+            { name: "FENOMEN RAP", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenrap/abr/fenomenrap/128/chunks.m3u8" },
+            { name: "X Radio", logo: "https://www.xradio.com.tr/favicon.ico", url: "https://stream.xradio.com.tr:8770/stream" },
+            { name: "Radyo S", logo: "http://radyos.com.tr/apple-touch-icon.png", url: "http://icecast.netmedya.net/radyos" },
+            { name: "Radyo EN", logo: "https://www.radyoen.com.tr/images/radyo-en-logo.png", url: "https://yayin2.canliyayin.org:7222/;" },
+            { name: "BABYLAND TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/babyland/playlist.m3u8" },
+            { name: "Onur Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://anadolu.liderhost.com.tr:8094/" },
+            { name: "Radyo 2000 Erzincan", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayindakiler.com:3030/stream?/;stream.mp3" },
+            { name: "Radyo Bilkent", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.netradyom.com/listen/radyobilkent/radio.mp3" },
+            { name: "dinamo.fm deep", logo: "https://www.dinamo.fm/favicons/dinamo-deep-favicon.jpg", url: "http://channels.dinamo.fm/deep-mp3" },
+            { name: "Radyo Viva", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyoviva/playlist.m3u8" },
+            { name: "Loops Radio Elektronica Station", logo: "https://i.postimg.cc/XYRRHwry/android-chrome-512x512.png", url: "https://ssl22.radyotelekom.com/8232/stream" },
+            { name: "Radyo Eksen", logo: "https://img.icons8.com/color/96/radio.png", url: "https://dygedge.radyotvonline.net/radyoeksen/playlist.m3u8" },
+            { name: "Max Fm 95.8 'Maximum Music'", logo: "https://img.icons8.com/color/96/radio.png", url: "https://maxfm.radyotvonline.net/stream/164/;" },
+            { name: "Romantik SES Sakarya", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.romantikses.com/romantiksessakary/stream" },
+            { name: "TÃ¼rkÃ¼Radyo", logo: "https://turkuradyo.net/wp-content/themes/TurkuRadyo/images/logo.png", url: "https://yayin.turkhosted.com/4591/stream" },
+            { name: "Radyo HavalarÄ±", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "RADYO 42 FM MEDYA KONYA PR MUSIC TURKIYE", logo: "https://www.radio.net/300/radio-42-fm-medya-konya-pr-music.png", url: "https://a8.asurahosting.com/hls/radyo_42_fm_medya_konya_pr_music/live.m3u8" },
+            { name: "Radyo Mars", logo: "https://radyomars.com/logo.png", url: "https://yayin.radyomadyo.com:9400/stream" },
+            { name: "TÃ¼rkiyem FM", logo: "https://turkiyemfm.com", url: "https://server7.streamserver24.com/proxy/turkiyemfm?mp=/stream" },
+            { name: "Rock FM 94.5 Turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "http://rockfm.rockfm.com.tr:9450/stream" },
+            { name: "NUMBERONE WORLD TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2f95dcb16_1/playlist.m3u8" },
+            { name: "Retro Turk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RETROTURK_SC?/;" },
+            { name: "Beyaz TV", logo: "https://img.icons8.com/color/96/tv.png", url: "https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_1080p.m3u8" },
+            { name: "Radyo Nida", logo: "https://radyonida.com.tr/dist/img/radyo-nida.jpg?2", url: "https://anadolu.liderhost.com.tr/8106/stream" },
+            { name: "S1lhoutte - 90's FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/166/" },
+            { name: "RADYO AKDENIZ", logo: "https://www.radyoakdeniz.com/wp-content/uploads/2024/03/cropped-radyoakdeniz-180x180.png", url: "https://yayin.radyoakdeniz.com/9470/stream" },
+            { name: "DiyarbakÄ±r Ã‡aÄŸrÄ± FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.cagrifm.com.tr/cagrifm" },
+            { name: "Govend radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream-56.zeno.fm/xzzu8kynq2zuv?zs=nZP7ZCRXQPOpDFenayr0bQ" },
+            { name: "Tv24", logo: "https://turkmedya.com.tr/assets/img/favico.png", url: "https://turkmedya-live.ercdn.net/tv24/tv24_720p.m3u8" },
+            { name: "GÃ–KKUÅžAÄžI RADYO TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://gokkusagiradyo.kesintisizyayin.com:8008/" },
+            { name: "TRT Erzurum", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/60b756f6-d53d-42dd-909b-7e09f2c38d82.png", url: "https://radio-trterzurum.medya.trt.com.tr/master.m3u8" },
+            { name: "Number one", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/numberone" },
+            { name: "NUMBER ONE  TURK AJDA PEKKAN", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e3ed520608_1/playlist.m3u8" },
+            { name: "Radyo Banko Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:8050/RADYOBANKO" },
+            { name: "Radyo Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "http://46.20.4.5:8170/" },
+            { name: "Power dance", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerdance/abr/powerdance/128/playlist.m3u8" },
+            { name: "Bizim Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ip132.ozelip.com:7017/" },
+            { name: "Ø§Ø°Ø§Ø¹Ø© Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ… ðŸ‡¹ðŸ‡·", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radiojar.com/0tpy1h0kxtzuv" },
+            { name: "imaj fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/imajfm/stream/;stream.mp3" },
+            { name: "Radyo Delal", logo: "https://img.icons8.com/color/96/radio.png", url: "https://wowza1.radyotvonline.com/idilpr/radyodelal.stream/playlist.m3u8" },
+            { name: "Radioo Mega site", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "Radio Ava Turkiye", logo: "https://img.icons8.com/color/96/radio.png", url: "http://play.markaradyo.com:8002/stream" },
+            { name: "Radyo Trafik Ä°stanbul", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.100.118/stream/157/" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "Radio Light", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.radiolight.net:8005/live" },
+            { name: "Fenomen TÃ¼rk 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenturk/256/chunks.m3u8" },
+            { name: "Radyo 45lik CanlÄ± YayÄ±n - En Ä°yi TÃ¼rkÃ§e Nostalji ÅžarkÄ±lar | 70ler 80ler ve 90lar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "KÃ¶roÄŸlu FM", logo: "https://www.canliradyodinle.fm/wp-content/uploads/koroglu-fm.jpg", url: "https://yayin.turkhosted.com:6068/stream?/;stream.mp3" },
+            { name: "REPLAY NEWS - TÃ¼rkÃ§e", logo: "https://www.publicsante.com/BIENVENU/LOGO%20REPLAY%20NEWS-TR.png", url: "https://replaynewstr.ice.infomaniak.ch/replaynewstr-128.mp3" },
+            { name: "Turkuvaz Musiki", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/turkuvazmusiki/playlist.m3u8" },
+            { name: "Power R&B Hip-Hop", logo: "https://cdn.powergroup.com.tr/image/100x100/powerapp/channels/v3/inverse/logo_57.png?v=716", url: "https://listen.powerapp.com.tr/powerrbhiphop/256/chunks.m3u8" },
+            { name: "X Radio", logo: "https://xradio.com.tr/favicon.ico", url: "http://yayin.radyomadyo.com:8770/" },
+            { name: "radio megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;" },
+            { name: "Love Radio - Turkish Love songs", logo: "https://img.icons8.com/color/96/radio.png", url: "https://nl4.mystreaming.net/uber/lrturkish/icecast.audio" },
+            { name: "Haber TÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://haberturkradyo.radyotvonline.net/haberturkradyo" },
+            { name: "dinamo.fm fluent", logo: "https://www.dinamo.fm/favicons/dinamo-fluent-favicon.jpg", url: "http://channels.dinamo.fm/fluent-mp3" },
+            { name: "dinamo.fm sleep", logo: "https://www.dinamo.fm/favicons/dinamo-sleep-favicon.jpg", url: "http://channels.dinamo.fm/sleep-mp3" },
+            { name: "FIND A CUTÄ°E", logo: "https://stream.zeno.fm/lyl2uv7fcvovv", url: "https://stream.zeno.fm/lyl2uv7fcvovv" },
+            { name: "Radio Mydonose", logo: "https://img.icons8.com/color/96/radio.png", url: "https://29083.live.streamtheworld.com/RADIO_MYDONOSE128AAC.aac?/;stream.mp3" },
+            { name: "POWER EARTH", logo: "https://img.icons8.com/color/96/radio.png", url: "http://listen.powerapp.com.tr/powerearth/abr/playlist.m3u8" },
+            { name: "Radyo Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyospor/playlist.m3u8" },
+            { name: "KEYF STATION", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.radyomadyo.com:8002/stream" },
+            { name: "Radyo Sinerji", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radio.guventechnology.com/9994/stream" },
+            { name: "Fenomen Clubbin 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenclubbin/256/chunks.m3u8" },
+            { name: "Radyo Viva", logo: "https://demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png", url: "https://edge1.radyotvonline.net/shoutcast/play/radyoviva" },
+            { name: "S1LHOUTTE ANKARA HAVALARI", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "CantÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge2.radyotvonline.net/cnnturk/playlist.m3u8?listeningSessionID=669e367246737fe5_6249184_Zq120UIn__0000001w2Bs&downloadSessionID=0" },
+            { name: "S1lhoutte - Slow FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10973/" },
+            { name: "Radyo GÃ¶ktÃ¼rk", logo: "https://radyogokturk.com/dinle/doc/avatar.jpg", url: "https://ip231.ozelip.com:8004/;stream.mp3" },
+            { name: "Ä°TÃœ Klasik", logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic-media.streema.com%2Fmedia%2Fcache%2F67%2F92%2F67927d9794c4535218ca4dfc85e58c1c.jpg&f=1&nofb=1&ipt=199dd090ea0b2d9b521c7b84cc0e2838c2b42aacd8a2ff4a04f2ea06a32ae0b6", url: "http://160.75.86.29:8088/ituklasikmp3" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Yeni Radyo Nostaljinin Sesi", logo: "https://img.icons8.com/color/96/radio.png", url: "http://51.255.235.165:26113/stream" },
+            { name: "Loops Radio Progressive", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://progressive.ozelip.com/7670/stream" },
+            { name: "Radyo 13", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayindakiler.com:3050/stream?/;stream.mp3" },
+            { name: "power plus", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerplus/abr/playlist.m3u8" },
+            { name: "dinamo.fm live from minimuzikhol", logo: "https://www.dinamo.fm/favicons/dinamo-mmradyo-favicon.jpg", url: "https://channels.dinamo.fm/mmradyo-mp3" },
+            { name: "DoÄŸan 22", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3024/;" },
+            { name: "playdanceradio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/playdanceradio/stream" },
+            { name: "Arkadas Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin2.yayindakiler.com:4134/;stream.nsv" },
+            { name: "Tarkan", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.pcradio.ru/tarkan-hi" },
+            { name: "Radyo Gol", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyogol/playlist.m3u8" },
+            { name: "loops radio", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://progressive.ozelip.com/7670/stream" },
+            { name: "GenÃ§ FM", logo: "https://www.gencfm.com.tr/static/2022/05/18/logo1234-1652884523-699.png", url: "https://yayin1.canlitv.fun/radyo/gencfm/chunklist_w1257533803.m3u8" },
+            { name: "JoyTÃ¼rk Rock", logo: "https://api.karnaval.com/v1/stations/joyturk-rock/logos/square", url: "http://23613.live.streamtheworld.com/JOYTURK_ROCK128AAC.aac" },
+            { name: "KIYI Turkce", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyiturk.radioca.st/stream" },
+            { name: "JoyTÃ¼rk Rock", logo: "https://api.karnaval.com/v1/stations/joyturk-rock/logos/square", url: "http://21633.live.streamtheworld.com/JOYTURK_ROCK128AAC.aac?/;stream.mp3" },
+            { name: "Radyo Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssldyg.radyotvonline.com/pozitif/smil:voyage.smil/playlist.m3u8" },
+            { name: "Radyo Viva", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyoviva/playlist.m3u8" },
+            { name: "FENOMEN DANS", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomendans/abr/fenomendans/128/chunks.m3u8" },
+            { name: "imaj fm Erzurum", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/imajfm/stream/;stream.mp3" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Radyo ODTU - Rock", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radyoodtu.com.tr/rock" },
+            { name: "KURAN ve TÃœRKÃ‡E MEAL", logo: "http://baser.org/Kuran.jpg", url: "http://baserorg.duckdns.org:8000/" },
+            { name: "Fenomen 2010'lar 256", logo: "https://cdn.radyofenomen.com/image/200x200/u/Channels/v2/logo_67.png?v=", url: "https://live.radyofenomen.com/fenomen2010/256/chunks.m3u8" },
+            { name: "Abuzer FM", logo: "https://oetpai.fra1.digitaloceanspaces.com/new_images/onestop_51424770_294131.png", url: "http://live.radyotvonline.com:9030/;stream.nsv" },
+            { name: "Fenomen Pop 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenpop/256/chunks.m3u8" },
+            { name: "PowerTÃ¼rk Dans", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerturkdans/abr/playlist.m3u8" },
+            { name: "GÃ¶l Radyo", logo: "https://www.canliradyodinle.fm/wp-content/uploads/gol-radyo.jpg", url: "https://28553.live.streamtheworld.com/SUPER_FM_ITUNES.mp3" },
+            { name: "Radyo Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagewmp.radyotvonline.com/" },
+            { name: "Show radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/show/playlist.m3u8" },
+            { name: "Radyo VenÃ¼s", logo: "https://www.radyovenus.net/wp-content/uploads/2020/11/radyovenus-logo.png", url: "https://stream2.rtvtakip.com:7005/;stream.mp3" },
+            { name: "Radyo Gol", logo: "https://img.icons8.com/color/96/radio.png", url: "https://edge1.radyotvonline.net/shoutcast/play/radyogol" },
+            { name: "TRT Antalya", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/25a3f157-c5a0-4506-b513-5e63518173bb.png", url: "https://radio-trtantalya.medya.trt.com.tr/master.m3u8" },
+            { name: "Her An Kur'an Her An Mutluluk", logo: "https://radio.mihr.com/api/station/6/art/9a76153b3003c3b5e252be87-1663451578.jpg", url: "https://radio.mihr.com/radio/8050/radio.mp3" },
+            { name: "Banko Fm 1", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:9910/RADYOBANKO" },
+            { name: "HabertÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ciner.daioncdn.net/haberturktv/haberturktv_1080p.m3u8?sid=67dy0kx38l3a&app=c98ab0b0-50cc-495b-bb37-778e91f5ff5b&ce=3" },
+            { name: "Sezen Radyo", logo: "https://www.sezenradyo.com/favicon", url: "http://radyo1.radyo-dinle.tc:8038/" },
+            { name: "Romantik Ses ISPARTA", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.romantikses.com/romantiksesispart/stream" },
+            { name: "KUZEY FM TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.yayindakiler.com:3028/" },
+            { name: "Radyo FÄ±trat", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyofitrat.radyotvonline.net/" },
+            { name: "Easyland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/easyland/playlist.m3u8" },
+            { name: "EreÄŸli FM", logo: "https://ereglifm.com.tr/assets/imgs/logo.svg", url: "http://radyo.yayindakiler.com:3000/stream" },
+            { name: "Alem FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://turkmedya.radyotvonline.com/turkmedya/alemfm.stream/playlist.m3u8" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Bayram FM", logo: "https://www.radyodinletv.com/wp-content/uploads/bayram-fm-300x159.jpg", url: "https://sslyayin.netyayin.net:10962/320.mp3" },
+            { name: "RADYO FENOMEN 2010 LAR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomen2010/abr/playlist.m3u8" },
+            { name: "Hemdem Radyo", logo: "https://hemdemradyo.com/gri.png", url: "https://radyoserver3.okeylisans.com:8040/stream" },
+            { name: "Radyo Eksen", logo: "https://play-lh.googleusercontent.com/mZJAkKjMR2K7fgYclmBl5rJP7oBcd_sMOnI-E0KrB56UO0Ew7bYUWgWijJ5xTOB_mKk", url: "https://dygedge.radyotvonline.net/radyoeksen/playlist.m3u8" },
+            { name: "TGRT FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://b01c02nl.mediatriple.net/videoonlylive/mtsxxkzwwuqtglive/broadcast_5fead000e2128.smil/playlist.m3u8" },
+            { name: "Radyo Banko", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:9910/RADYOBANKO" },
+            { name: "TRT Radyo KurdÃ®", logo: "https://trtkurdi.com.tr/favicon.ico", url: "https://radio-trtradyo6.medya.trt.com.tr/master.m3u8" },
+            { name: "BRTK", logo: "https://brtk.net/wp-content/uploads/2024/11/28/cropped-brt-icon-180x180.png?ver=ebc4c4ff24f512d1ba2ae8331bfa527d", url: "http://sc.brtk.net:8000/" },
+            { name: "RADYO VOYAGE", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagewmp.radyotvonline.com/;" },
+            { name: "HOS MÄ°X", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10871/" },
+            { name: "Radyo MODyAn", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radio.co/s55d598f42/listen" },
+            { name: "GREEKLAND", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/greekland/playlist.m3u8" },
+            { name: "andromeda radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/andromedaradio/stream" },
+            { name: "TRT DiyarbakÄ±r", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/41d20783-0d27-48af-a16b-d1df88610d70.png", url: "https://radio-trtgap.medya.trt.com.tr/master.m3u8" },
+            { name: "ALTIN ÅžARKILAR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/altinsarkilar/playlist.m3u8" },
+            { name: "Med Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://medradyo.kesintisizyayin.com:8062/stream" },
+            { name: "Dijital radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10961/;" },
+            { name: "ElazÄ±ÄŸ Mavi Radyo", logo: "https://maviradyo.net/assets/images/logo2.png", url: "https://yayin.turkhosted.com/6066/stream" },
+            { name: "PazarcÄ±k", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.pazarcikfm.com:9090/" },
+            { name: "HOME KLASÄ°K TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssl4.radyotvonline.com/radyohome/klasikhome.stream_aac/playlist.m3u8" },
+            { name: "KÄ±yÄ± Caz", logo: "https://img.icons8.com/color/96/radio.png", url: "https://caz.radioca.st/stream" },
+            { name: "Radyo Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/;" },
+            { name: "TRT Diyanet Ã‡ocuk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://tv-trtdiyanetcocuk.medya.trt.com.tr/master_720.m3u8" },
+            { name: "Mydonose TÃ¼rk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://27913.live.streamtheworld.com/MYDONOSE_TURK128AAC.aac?/;stream.mp3" },
+            { name: "MERKEZ FM SAMSUN TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://uydu.radyotvyayini.com:8016/" },
+            { name: "Can Tv", logo: "https://img.icons8.com/color/96/tv.png", url: "https://livetv.canbroadcast.com:7443/canlican/tv.m3u8" },
+            { name: "Show radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/show/playlist.m3u8" },
+            { name: "BloombergHTradyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ciner-live.ercdn.net/bloombergradyo/bloombergradyo_1.m3u8" },
+            { name: "Magic FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3032/" },
+            { name: "Radyo 45lik CanlÄ± YayÄ±n - En Ä°yi TÃ¼rkÃ§e Nostalji ÅžarkÄ±lar | 70ler 80ler ve 90lar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "Radyo GÃ¼l", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin2.canliyayin.org:8866/;*.mp3" },
+            { name: "Danceland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/danceland/playlist.m3u8" },
+            { name: "Esas radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.turkhosted.com:6034/stream/;stream.mp3" },
+            { name: "Mayday Records", logo: "https://i.postimg.cc/ZnsgHRtW/android-chrome-512x512.png", url: "https://stream.maydayrecords.net/radio/8000/maydayrecords.mp3" },
+            { name: "Lig Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ligradyo.radyotvonline.net/ligradyo" },
+            { name: "Lig Radyo", logo: "https://www.ligradyo.com.tr/assets/img/ligradyo-apple-touch-icon.png", url: "https://turkmedya.radyotvonline.com/turkmedya/ligradyo.stream/playlist.m3u8" },
+            { name: "Radio Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3" },
+            { name: "dinamo.fm fluent", logo: "https://www.dinamo.fm/favicons/dinamo-fluent-favicon.jpg", url: "http://channels.dinamo.fm/fluent-mp3" },
+            { name: "CADENA JOVEN RADIO 107.3 FM", logo: "https://cadenajoven.es/wp-content/uploads/2023/07/LOGO-SOLO-TR-NUEVO-CADENA-JOVEN-144.png", url: "https://antares.dribbcast.com/proxy/cadenajovenradio?mp=/stream" },
+            { name: "FÄ±rat FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10912/;" },
+            { name: "AÃ‡S Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ip169.ozelip.com:10838/" },
+            { name: "Fenomen Dans 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomendans/256/chunks.m3u8" },
+            { name: "Mega Site .", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3RADYO%20MEGAS%C4%B0TE%20=" },
+            { name: "Denge Gundeme", logo: "https://img.icons8.com/color/96/radio.png", url: "http://kesintisizyayin.com:1656/" },
+            { name: "Radyo HakkÄ±n Sesi", logo: "https://mihr.com/Content/images/logo2.png", url: "https://radio.mihr.com/radio/8010/hakkinsesi" },
+            { name: "BatÄ± Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net:10902/" },
+            { name: "TheRockRadio", logo: "https://therock.com.tr/images/favicon.png", url: "https://ssl4.radyotvonline.com/radyohome/therockradio.stream/playlist.m3u8" },
+            { name: "Radyo Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "Veng RADYO", logo: "https://www.vengradyo.com/radyogorsel.jpg", url: "https://live.radyo.in/8012/stream" },
+            { name: "MEGA SÄ°TE", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3" },
+            { name: "Serhat FM 91.5", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.serhatfm.com:9150/stream" },
+            { name: "Erkam Radyo 2nd Stream", logo: "https://play-lh.googleusercontent.com/Hf0NtOQoXmIPWe2Hz8C5nptvA6Hx4QOvPmuE1bOkDhjcV6bJgRZBWAXS3Cjtf64QvD0", url: "https://yayin2.canliyayin.org:10910/stream?" },
+            { name: "Radyo 45lik - 45'lik Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "KÃ¼pe FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://icecast.netmedya.net/kupefm" },
+            { name: "Power Gold TR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.powerapp.com.tr/powergold/abr/playlist.m3u8" },
+            { name: "Discoland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/discoland/playlist.m3u8" },
+            { name: "power love", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerlove/abr/playlist.m3u8" },
+            { name: "Vokal Tr", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyolanddoksanlar/playlist.m3u8" },
+            { name: "Radyo light", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.radiolight.net:8005/live" },
+            { name: "Fenomen 256", logo: "https://cdn.radyofenomen.com/image/200x200/u/Channels/v2/logo_20.png?v=", url: "https://live.radyofenomen.com/fenomen/256/chunks.m3u8" },
+            { name: "NUR Radyo", logo: "https://www.mihr.com/Content/images/mihrcom.ico", url: "https://canli.hidayetradyolari.com/listen/radyo_nur/radio.mp3" },
+            { name: "FENOMEN AKUSTIK", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenakustik/abr/fenomenakustik/128/chunks.m3u8" },
+            { name: "Radyo Taksi", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyo.in/8006/stream" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Radyo A (Radyo Anadolu Ãœniversitesi)", logo: "https://img.icons8.com/color/96/radio.png", url: "http://canli.radyoa.anadolu.edu.tr:44445/Radyo_A_MP3" },
+            { name: "radio Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.asymedya.com:8020/radio.mp3" },
+            { name: "Emek radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.radyohizmeti.com:8585/;" },
+            { name: "Fenerbahce Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://91.232.174.18:8000/Stream" },
+            { name: "Standart.fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/standartfm/playlist.m3u8" },
+            { name: "meteorolojinin sesi", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyomgm.canliyayinda.com/;stream.mp3" },
+            { name: "DanceLand Anthems", logo: "https://like.radio/favicon.ico", url: "https://likeradiostream.com/dancelandanthems" },
+            { name: "Radio Line", logo: "https://radioline.fm/wp-content/uploads/2020/05/radioline_logo.png", url: "https://online.radioline.fm:8443/stream" },
+            { name: "Erkam Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://api-tv5.yayin.com.tr:8002/mp3" },
+            { name: "Erkam Radyo", logo: "https://www.erkamradyo.com/images/mobil.png", url: "https://api-tv5.yayin.com.tr:8002/mp3" },
+            { name: "HaYaTMiX Slow", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayin.com.tr:4090/mp3" },
+            { name: "TRT Memleketim FM", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/34a7a0ae-669e-4449-9f60-ad17563021c8.png", url: "https://radio-trtmemleketimfm.medya.trt.com.tr/master.m3u8" },
+            { name: "https://turkmedya-live.ercdn.net/tv24/tv24.m3u8", logo: "https://img.icons8.com/color/96/radio.png", url: "https://turkmedya-live.ercdn.net/tv24/tv24.m3u8" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "Danceland", logo: "https://like.radio/favicon.ico", url: "https://likeradiostream.com/danceland" },
+            { name: "Gundi Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://gundifm.ozelip.com:7830/;" },
+            { name: "a PARA", logo: "https://i.tmgrup.com.tr/apara/site/v1/i/favicon.png", url: "https://trkvz-radyolar.ercdn.net/apararadyo/playlist.m3u8" },
+            { name: "POP HOME", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/pophome/playlist.m3u8" },
+            { name: "radyo megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "andromedaradio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/andromedaradio/stream" },
+            { name: "Fenomen KarÄ±ÅŸÄ±k 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenkarisik/256/chunks.m3u8" },
+            { name: "Vav Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/radyovav/playlist.m3u8" },
+            { name: "Cnn TÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge2.radyotvonline.net/cnnturk/playlist.m3u8?listeningSessionID=669e367246737fe5_6249184_Zq120UIn__0000001w2Bs&downloadSessionID=0" },
+            { name: ". Abdulbasit Abdulsamad", logo: "https://mp3islam.com/favicon.ico", url: "https://radio.mp3islam.com/listen/abdulbasit/radio.mp3" },
+            { name: "Halk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10876/;" },
+            { name: "107.4 Radio Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "https://dygedge.radyotvonline.net/radyovoyage/playlist.m3u8?listenerid=29d0a6a85b59cea2ca801b70d2a3ebaf&awparams=companionAds%3Atrue" },
+            { name: "Yaren FM", logo: "https://tarsusfm.com.tr/favicon.ico", url: "https://yarenfmn.80.yayin.com.tr//stream" },
+            { name: "Radyo Odtu Easy", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream3.radyoodtu.com.tr:8000/easy" },
+            { name: "dinamo.fm smog", logo: "https://www.dinamo.fm/favicons/dinamo-smog-favicon.jpg", url: "http://channels.dinamo.fm/smog-mp3" },
+            { name: "Radyo Alevi Canlar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://alevifm.80.yayin.com.tr/" },
+            { name: "BÄ°LECÄ°K FM TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://bilecikfm.kesintisizyayin.com:9980/" },
+            { name: "Trt Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://rd-trtradyo1.medya.trt.com.tr/master_128.m3u8" },
+            { name: "HAYATMÄ°X", logo: "https://img.icons8.com/color/96/radio.png", url: "https://hayatmix.yayin.com.tr/mp3" },
+            { name: "Danceland turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/danceland/playlist.m3u8" },
+            { name: "Radyo GÃ¶kÃ§eada", logo: "https://www.radyogokceada.net/favicon.ico", url: "https://radyo.yayin.com.tr:6179/;" },
+            { name: "Moral FM", logo: "http://moralfm.com.tr/yonetim/uploads/image/logo-base-1.png", url: "https://stream-157.zeno.fm/0cfiqwdkobavv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiIwY2ZpcXdka29iYXZ2IiwiaG9zdCI6InN0cmVhbS0xNTcuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6Ik1kcEtfTUtQUm5xS3N4Mk8yXzl5YnciLCJpYXQiOjE3MzEyNzQ1ODIsImV4cCI6MTczMTI3NDY0Mn0.0eDtTzJb2qydtHkWls4Op4nmAZvg_Q9AyObMw0XOy50" },
+            { name: "Diyanet Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://eustr73.mediatriple.net/videoonlylive/mtikoimxnztxlive/broadcast_5e3c1171d7d2a.smil/playlist.m3u8" },
+            { name: "Axa Rojava", logo: "http://zeno.fm/favicon.ico", url: "https://stream.zeno.fm/h6mn2c8ha8zuv" },
+            { name: "GÄ°MSA RADYO", logo: "https://www.gimsa.com.tr/images/apple-touch-icon.png", url: "http://yayin1.canliyayin.org:9482/stream" },
+            { name: "Mio Radio", logo: "https://static.wixstatic.com/media/289b80_d3c08d5820c0a13527afed308f65aa07.jpg/v1/crop/x_59,y_22,w_273,h_236/fill/w_284,h_230,al_c,lg_1,q_80,enc_avif,quality_auto/289b80_d3c08d5820c0a13527afed308f65aa07.jpg", url: "https://s2.myradiostream.com/13662/;?type=http&nocache=1769756485?0.283950275860107" },
+            { name: "SÃ¼per Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER2_SC" },
+            { name: "Kent FM", logo: "https://static.wixstatic.com/media/9477e9_5d00a2e59e4d4bada251627401f75c91~mv2.png/v1/fill/w_150,h_114,al_c,q_85,usm_0.66_1.00_0.01/KENT_FM_LOGO.webp", url: "https://moondigitalmaster.radyotvonline.net/kentfm/playlist.m3u8" },
+            { name: "A spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/asporradyo/chunklist.m3u8" },
+            { name: "Radyo 9", logo: "https://www.radyo9.com/logo.png", url: "https://radyo.yayin.com.tr:4010/" },
+            { name: "Radyo Can", logo: "http://www.radyocan.net/favicon.ico", url: "http://yayin2.yayindakiler.com:4174/;stream.mp3" },
+            { name: "TRT Radyo Haber", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/20d0b80f-bb7a-4fcb-9a61-88662ebcb2dc.png", url: "https://trt.radyotvonline.net/trthaber" },
+            { name: "MEGASITE", logo: "https://www.megasite.com.tr/wp-content/uploads/2022/10/logo.png", url: "https://stream.netradyom.com/listen/megasite/radio.mp3" },
+            { name: "DoÄŸu Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://198.7.59.28:8146/" },
+            { name: "Tarsus FM", logo: "https://tarsusfm.com.tr/favicon.ico", url: "https://tarsusfm.80.yayin.com.tr//stream" },
+            { name: "Radyo Mori", logo: "https://img.icons8.com/color/96/radio.png", url: "https://amed.ozelip.com/8040/stream" },
+            { name: "Power love", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerlove/abr/powerlove/128/playlist.m3u8" },
+            { name: "CLASSICLAND TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/classicland/playlist.m3u8" },
+            { name: "Max Fm 95.8 Maximum Music", logo: "https://img.icons8.com/color/96/radio.png", url: "http://live2.radyotvonline.com:8025/" },
+            { name: "Erzincan Nostalji Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://erzincannostalji.ozelip.com/8238/stream" },
+            { name: "Ä°TÃœ Radyosu Rock", logo: "http://www.radyo.itu.edu.tr/Sitefinity/WebsiteTemplates/GenelTemplate/App_Themes/ITUGenelTemplate/Images/favicon.ico", url: "http://160.75.86.29:8095/" },
+            { name: "KÄ±yÄ± MÃ¼zik", logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkiyimuzik.com%2Fwp-content%2Fuploads%2F2019%2F07%2Fkiyi_radyo_logo.png&f=1&nofb=1&ipt=423a3e527aca8329cc1b4cce32694ac0cfa31811f92db41e100b719b331b0590", url: "https://kiyi.radioca.st/stream" },
+            { name: "FENOMEN RAP", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenrap/abr/fenomenrap/128/chunks.m3u8" },
+            { name: "X Radio", logo: "https://www.xradio.com.tr/favicon.ico", url: "https://stream.xradio.com.tr:8770/stream" },
+            { name: "Radyo S", logo: "http://radyos.com.tr/apple-touch-icon.png", url: "http://icecast.netmedya.net/radyos" },
+            { name: "Radyo EN", logo: "https://www.radyoen.com.tr/images/radyo-en-logo.png", url: "https://yayin2.canliyayin.org:7222/;" },
+            { name: "BABYLAND TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/babyland/playlist.m3u8" },
+            { name: "Onur Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://anadolu.liderhost.com.tr:8094/" },
+            { name: "Radyo 2000 Erzincan", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayindakiler.com:3030/stream?/;stream.mp3" },
+            { name: "Radyo Bilkent", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.netradyom.com/listen/radyobilkent/radio.mp3" },
+            { name: "dinamo.fm deep", logo: "https://www.dinamo.fm/favicons/dinamo-deep-favicon.jpg", url: "http://channels.dinamo.fm/deep-mp3" },
+            { name: "Radyo Viva", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyoviva/playlist.m3u8" },
+            { name: "Loops Radio Elektronica Station", logo: "https://i.postimg.cc/XYRRHwry/android-chrome-512x512.png", url: "https://ssl22.radyotelekom.com/8232/stream" },
+            { name: "Radyo Eksen", logo: "https://img.icons8.com/color/96/radio.png", url: "https://dygedge.radyotvonline.net/radyoeksen/playlist.m3u8" },
+            { name: "Max Fm 95.8 'Maximum Music'", logo: "https://img.icons8.com/color/96/radio.png", url: "https://maxfm.radyotvonline.net/stream/164/;" },
+            { name: "Romantik SES Sakarya", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.romantikses.com/romantiksessakary/stream" },
+            { name: "TÃ¼rkÃ¼Radyo", logo: "https://turkuradyo.net/wp-content/themes/TurkuRadyo/images/logo.png", url: "https://yayin.turkhosted.com/4591/stream" },
+            { name: "Radyo HavalarÄ±", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "RADYO 42 FM MEDYA KONYA PR MUSIC TURKIYE", logo: "https://www.radio.net/300/radio-42-fm-medya-konya-pr-music.png", url: "https://a8.asurahosting.com/hls/radyo_42_fm_medya_konya_pr_music/live.m3u8" },
+            { name: "Radyo Mars", logo: "https://radyomars.com/logo.png", url: "https://yayin.radyomadyo.com:9400/stream" },
+            { name: "TÃ¼rkiyem FM", logo: "https://turkiyemfm.com", url: "https://server7.streamserver24.com/proxy/turkiyemfm?mp=/stream" },
+            { name: "Rock FM 94.5 Turkey", logo: "https://img.icons8.com/color/96/radio.png", url: "http://rockfm.rockfm.com.tr:9450/stream" },
+            { name: "NUMBERONE WORLD TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2f95dcb16_1/playlist.m3u8" },
+            { name: "Retro Turk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RETROTURK_SC?/;" },
+            { name: "Beyaz TV", logo: "https://img.icons8.com/color/96/tv.png", url: "https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_1080p.m3u8" },
+            { name: "Radyo Nida", logo: "https://radyonida.com.tr/dist/img/radyo-nida.jpg?2", url: "https://anadolu.liderhost.com.tr/8106/stream" },
+            { name: "S1lhoutte - 90's FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/166/" },
+            { name: "RADYO AKDENIZ", logo: "https://www.radyoakdeniz.com/wp-content/uploads/2024/03/cropped-radyoakdeniz-180x180.png", url: "https://yayin.radyoakdeniz.com/9470/stream" },
+            { name: "DiyarbakÄ±r Ã‡aÄŸrÄ± FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.cagrifm.com.tr/cagrifm" },
+            { name: "Govend radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream-56.zeno.fm/xzzu8kynq2zuv?zs=nZP7ZCRXQPOpDFenayr0bQ" },
+            { name: "Tv24", logo: "https://turkmedya.com.tr/assets/img/favico.png", url: "https://turkmedya-live.ercdn.net/tv24/tv24_720p.m3u8" },
+            { name: "GÃ–KKUÅžAÄžI RADYO TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://gokkusagiradyo.kesintisizyayin.com:8008/" },
+            { name: "TRT Erzurum", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/60b756f6-d53d-42dd-909b-7e09f2c38d82.png", url: "https://radio-trterzurum.medya.trt.com.tr/master.m3u8" },
+            { name: "Number one", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/numberone" },
+            { name: "NUMBER ONE  TURK AJDA PEKKAN", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e3ed520608_1/playlist.m3u8" },
+            { name: "Radyo Banko Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:8050/RADYOBANKO" },
+            { name: "Radyo Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "http://46.20.4.5:8170/" },
+            { name: "Power dance", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerdance/abr/powerdance/128/playlist.m3u8" },
+            { name: "Bizim Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ip132.ozelip.com:7017/" },
+            { name: "Ø§Ø°Ø§Ø¹Ø© Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ… ðŸ‡¹ðŸ‡·", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radiojar.com/0tpy1h0kxtzuv" },
+            { name: "imaj fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/imajfm/stream/;stream.mp3" },
+            { name: "Radyo Delal", logo: "https://img.icons8.com/color/96/radio.png", url: "https://wowza1.radyotvonline.com/idilpr/radyodelal.stream/playlist.m3u8" },
+            { name: "Radioo Mega site", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "Radio Ava Turkiye", logo: "https://img.icons8.com/color/96/radio.png", url: "http://play.markaradyo.com:8002/stream" },
+            { name: "Radyo Trafik Ä°stanbul", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.100.118/stream/157/" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "Radio Light", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.radiolight.net:8005/live" },
+            { name: "Fenomen TÃ¼rk 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenturk/256/chunks.m3u8" },
+            { name: "Radyo 45lik CanlÄ± YayÄ±n - En Ä°yi TÃ¼rkÃ§e Nostalji ÅžarkÄ±lar | 70ler 80ler ve 90lar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "KÃ¶roÄŸlu FM", logo: "https://www.canliradyodinle.fm/wp-content/uploads/koroglu-fm.jpg", url: "https://yayin.turkhosted.com:6068/stream?/;stream.mp3" },
+            { name: "REPLAY NEWS - TÃ¼rkÃ§e", logo: "https://www.publicsante.com/BIENVENU/LOGO%20REPLAY%20NEWS-TR.png", url: "https://replaynewstr.ice.infomaniak.ch/replaynewstr-128.mp3" },
+            { name: "Turkuvaz Musiki", logo: "https://img.icons8.com/color/96/radio.png", url: "https://trkvz-radyolar.ercdn.net/turkuvazmusiki/playlist.m3u8" },
+            { name: "Power R&B Hip-Hop", logo: "https://cdn.powergroup.com.tr/image/100x100/powerapp/channels/v3/inverse/logo_57.png?v=716", url: "https://listen.powerapp.com.tr/powerrbhiphop/256/chunks.m3u8" },
+            { name: "X Radio", logo: "https://xradio.com.tr/favicon.ico", url: "http://yayin.radyomadyo.com:8770/" },
+            { name: "radio megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;" },
+            { name: "Love Radio - Turkish Love songs", logo: "https://img.icons8.com/color/96/radio.png", url: "https://nl4.mystreaming.net/uber/lrturkish/icecast.audio" },
+            { name: "Haber TÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://haberturkradyo.radyotvonline.net/haberturkradyo" },
+            { name: "dinamo.fm fluent", logo: "https://www.dinamo.fm/favicons/dinamo-fluent-favicon.jpg", url: "http://channels.dinamo.fm/fluent-mp3" },
+            { name: "dinamo.fm sleep", logo: "https://www.dinamo.fm/favicons/dinamo-sleep-favicon.jpg", url: "http://channels.dinamo.fm/sleep-mp3" },
+            { name: "FIND A CUTÄ°E", logo: "https://stream.zeno.fm/lyl2uv7fcvovv", url: "https://stream.zeno.fm/lyl2uv7fcvovv" },
+            { name: "Radio Mydonose", logo: "https://img.icons8.com/color/96/radio.png", url: "https://29083.live.streamtheworld.com/RADIO_MYDONOSE128AAC.aac?/;stream.mp3" },
+            { name: "POWER EARTH", logo: "https://img.icons8.com/color/96/radio.png", url: "http://listen.powerapp.com.tr/powerearth/abr/playlist.m3u8" },
+            { name: "Radyo Spor", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyospor/playlist.m3u8" },
+            { name: "KEYF STATION", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.radyomadyo.com:8002/stream" },
+            { name: "Radyo Sinerji", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radio.guventechnology.com/9994/stream" },
+            { name: "Fenomen Clubbin 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenclubbin/256/chunks.m3u8" },
+            { name: "Radyo Viva", logo: "https://demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png", url: "https://edge1.radyotvonline.net/shoutcast/play/radyoviva" },
+            { name: "S1LHOUTTE ANKARA HAVALARI", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "CantÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge2.radyotvonline.net/cnnturk/playlist.m3u8?listeningSessionID=669e367246737fe5_6249184_Zq120UIn__0000001w2Bs&downloadSessionID=0" },
+            { name: "S1lhoutte - Slow FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10973/" },
+            { name: "Radyo GÃ¶ktÃ¼rk", logo: "https://radyogokturk.com/dinle/doc/avatar.jpg", url: "https://ip231.ozelip.com:8004/;stream.mp3" },
+            { name: "Ä°TÃœ Klasik", logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic-media.streema.com%2Fmedia%2Fcache%2F67%2F92%2F67927d9794c4535218ca4dfc85e58c1c.jpg&f=1&nofb=1&ipt=199dd090ea0b2d9b521c7b84cc0e2838c2b42aacd8a2ff4a04f2ea06a32ae0b6", url: "http://160.75.86.29:8088/ituklasikmp3" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Yeni Radyo Nostaljinin Sesi", logo: "https://img.icons8.com/color/96/radio.png", url: "http://51.255.235.165:26113/stream" },
+            { name: "Loops Radio Progressive", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://progressive.ozelip.com/7670/stream" },
+            { name: "Radyo 13", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayindakiler.com:3050/stream?/;stream.mp3" },
+            { name: "power plus", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerplus/abr/playlist.m3u8" },
+            { name: "dinamo.fm live from minimuzikhol", logo: "https://www.dinamo.fm/favicons/dinamo-mmradyo-favicon.jpg", url: "https://channels.dinamo.fm/mmradyo-mp3" },
+            { name: "DoÄŸan 22", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3024/;" },
+            { name: "playdanceradio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/playdanceradio/stream" },
+            { name: "Arkadas Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin2.yayindakiler.com:4134/;stream.nsv" },
+            { name: "Tarkan", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.pcradio.ru/tarkan-hi" },
+            { name: "Radyo Gol", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyogol/playlist.m3u8" },
+            { name: "loops radio", logo: "https://loopsradio.com/wp-content/uploads/2023/09/cropped-loopsradiofaviconred-180x180.png", url: "https://progressive.ozelip.com/7670/stream" },
+            { name: "GenÃ§ FM", logo: "https://www.gencfm.com.tr/static/2022/05/18/logo1234-1652884523-699.png", url: "https://yayin1.canlitv.fun/radyo/gencfm/chunklist_w1257533803.m3u8" },
+            { name: "JoyTÃ¼rk Rock", logo: "https://api.karnaval.com/v1/stations/joyturk-rock/logos/square", url: "http://23613.live.streamtheworld.com/JOYTURK_ROCK128AAC.aac" },
+            { name: "KIYI Turkce", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyiturk.radioca.st/stream" },
+            { name: "JoyTÃ¼rk Rock", logo: "https://api.karnaval.com/v1/stations/joyturk-rock/logos/square", url: "http://21633.live.streamtheworld.com/JOYTURK_ROCK128AAC.aac?/;stream.mp3" },
+            { name: "Radyo Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssldyg.radyotvonline.com/pozitif/smil:voyage.smil/playlist.m3u8" },
+            { name: "Radyo Viva", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyoviva/playlist.m3u8" },
+            { name: "FENOMEN DANS", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomendans/abr/fenomendans/128/chunks.m3u8" },
+            { name: "imaj fm Erzurum", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/imajfm/stream/;stream.mp3" },
+            { name: "RADYO 42 FM MEDYA KONYA PR MUSIC TURKIYE", logo: "https://www.radio.net/300/radio-42-fm-medya-konya-pr-music.png", url: "https://a8.asurahosting.com/hls/radyo_42_fm_medya_konya_pr_music/live.m3u8" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Radyo ODTU - Rock", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radyoodtu.com.tr/rock" },
+            { name: "KURAN ve TÃœRKÃ‡E MEAL", logo: "http://baser.org/Kuran.jpg", url: "http://baserorg.duckdns.org:8000/" },
+            { name: "Fenomen 2010'lar 256", logo: "https://cdn.radyofenomen.com/image/200x200/u/Channels/v2/logo_67.png?v=", url: "https://live.radyofenomen.com/fenomen2010/256/chunks.m3u8" },
+            { name: "Abuzer FM", logo: "https://oetpai.fra1.digitaloceanspaces.com/new_images/onestop_51424770_294131.png", url: "http://live.radyotvonline.com:9030/;stream.nsv" },
+            { name: "Fenomen Pop 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenpop/256/chunks.m3u8" },
+            { name: "PowerTÃ¼rk Dans", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerturkdans/abr/playlist.m3u8" },
+            { name: "GÃ¶l Radyo", logo: "https://www.canliradyodinle.fm/wp-content/uploads/gol-radyo.jpg", url: "https://28553.live.streamtheworld.com/SUPER_FM_ITUNES.mp3" },
+            { name: "Radyo Voyage", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagewmp.radyotvonline.com/" },
+            { name: "Show radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/show/playlist.m3u8" },
+            { name: "Radyo VenÃ¼s", logo: "https://www.radyovenus.net/wp-content/uploads/2020/11/radyovenus-logo.png", url: "https://stream2.rtvtakip.com:7005/;stream.mp3" },
+            { name: "Radyo Gol", logo: "https://img.icons8.com/color/96/radio.png", url: "https://edge1.radyotvonline.net/shoutcast/play/radyogol" },
+            { name: "TRT Antalya", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/25a3f157-c5a0-4506-b513-5e63518173bb.png", url: "https://radio-trtantalya.medya.trt.com.tr/master.m3u8" },
+            { name: "Her An Kur'an Her An Mutluluk", logo: "https://radio.mihr.com/api/station/6/art/9a76153b3003c3b5e252be87-1663451578.jpg", url: "https://radio.mihr.com/radio/8050/radio.mp3" },
+            { name: "Banko Fm 1", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:9910/RADYOBANKO" },
+            { name: "HabertÃ¼rk Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ciner.daioncdn.net/haberturktv/haberturktv_1080p.m3u8?sid=67dy0kx38l3a&app=c98ab0b0-50cc-495b-bb37-778e91f5ff5b&ce=3" },
+            { name: "Sezen Radyo", logo: "https://www.sezenradyo.com/favicon", url: "http://radyo1.radyo-dinle.tc:8038/" },
+            { name: "Romantik Ses ISPARTA", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.romantikses.com/romantiksesispart/stream" },
+            { name: "KUZEY FM TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.yayindakiler.com:3028/" },
+            { name: "Radyo FÄ±trat", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyofitrat.radyotvonline.net/" },
+            { name: "Easyland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/easyland/playlist.m3u8" },
+            { name: "EreÄŸli FM", logo: "https://ereglifm.com.tr/assets/imgs/logo.svg", url: "http://radyo.yayindakiler.com:3000/stream" },
+            { name: "Alem FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://turkmedya.radyotvonline.com/turkmedya/alemfm.stream/playlist.m3u8" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Bayram FM", logo: "https://www.radyodinletv.com/wp-content/uploads/bayram-fm-300x159.jpg", url: "https://sslyayin.netyayin.net:10962/320.mp3" },
+            { name: "RADYO FENOMEN 2010 LAR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomen2010/abr/playlist.m3u8" },
+            { name: "Hemdem Radyo", logo: "https://hemdemradyo.com/gri.png", url: "https://radyoserver3.okeylisans.com:8040/stream" },
+            { name: "Radyo Eksen", logo: "https://play-lh.googleusercontent.com/mZJAkKjMR2K7fgYclmBl5rJP7oBcd_sMOnI-E0KrB56UO0Ew7bYUWgWijJ5xTOB_mKk", url: "https://dygedge.radyotvonline.net/radyoeksen/playlist.m3u8" },
+            { name: "TGRT FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://b01c02nl.mediatriple.net/videoonlylive/mtsxxkzwwuqtglive/broadcast_5fead000e2128.smil/playlist.m3u8" },
+            { name: "Radyo Banko", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:9910/RADYOBANKO" },
+            { name: "TRT Radyo KurdÃ®", logo: "https://trtkurdi.com.tr/favicon.ico", url: "https://radio-trtradyo6.medya.trt.com.tr/master.m3u8" },
+            { name: "BRTK", logo: "https://brtk.net/wp-content/uploads/2024/11/28/cropped-brt-icon-180x180.png?ver=ebc4c4ff24f512d1ba2ae8331bfa527d", url: "http://sc.brtk.net:8000/" },
+            { name: "RADYO VOYAGE", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagewmp.radyotvonline.com/;" },
+            { name: "HOS MÄ°X", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10871/" },
+            { name: "Radyo MODyAn", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.radio.co/s55d598f42/listen" },
+            { name: "GREEKLAND", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/greekland/playlist.m3u8" },
+            { name: "andromeda radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/andromedaradio/stream" },
+            { name: "TRT DiyarbakÄ±r", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/41d20783-0d27-48af-a16b-d1df88610d70.png", url: "https://radio-trtgap.medya.trt.com.tr/master.m3u8" },
+            { name: "ALTIN ÅžARKILAR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/altinsarkilar/playlist.m3u8" },
+            { name: "Med Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://medradyo.kesintisizyayin.com:8062/stream" },
+            { name: "Dijital radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10961/;" },
+            { name: "ElazÄ±ÄŸ Mavi Radyo", logo: "https://maviradyo.net/assets/images/logo2.png", url: "https://yayin.turkhosted.com/6066/stream" },
+            { name: "PazarcÄ±k", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.pazarcikfm.com:9090/" },
+            { name: "HOME KLASÄ°K TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssl4.radyotvonline.com/radyohome/klasikhome.stream_aac/playlist.m3u8" },
+            { name: "KÄ±yÄ± Caz", logo: "https://img.icons8.com/color/96/radio.png", url: "https://caz.radioca.st/stream" },
+            { name: "Radyo Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/;" },
+            { name: "TRT Diyanet Ã‡ocuk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://tv-trtdiyanetcocuk.medya.trt.com.tr/master_720.m3u8" },
+            { name: "Mydonose TÃ¼rk", logo: "https://img.icons8.com/color/96/radio.png", url: "https://27913.live.streamtheworld.com/MYDONOSE_TURK128AAC.aac?/;stream.mp3" },
+            { name: "MERKEZ FM SAMSUN TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "http://uydu.radyotvyayini.com:8016/" },
+            { name: "Can Tv", logo: "https://img.icons8.com/color/96/tv.png", url: "https://livetv.canbroadcast.com:7443/canlican/tv.m3u8" },
+            { name: "Show radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/show/playlist.m3u8" },
+            { name: "BloombergHTradyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ciner-live.ercdn.net/bloombergradyo/bloombergradyo_1.m3u8" },
+            { name: "Magic FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.yayindakiler.com:3032/" },
+            { name: "Radyo 45lik CanlÄ± YayÄ±n - En Ä°yi TÃ¼rkÃ§e Nostalji ÅžarkÄ±lar | 70ler 80ler ve 90lar", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "Radyo GÃ¼l", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin2.canliyayin.org:8866/;*.mp3" },
+            { name: "Danceland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/danceland/playlist.m3u8" },
+            { name: "Esas radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.turkhosted.com:6034/stream/;stream.mp3" },
+            { name: "Mayday Records", logo: "https://i.postimg.cc/ZnsgHRtW/android-chrome-512x512.png", url: "https://stream.maydayrecords.net/radio/8000/maydayrecords.mp3" },
+            { name: "Lig Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ligradyo.radyotvonline.net/ligradyo" },
+            { name: "Lig Radyo", logo: "https://www.ligradyo.com.tr/assets/img/ligradyo-apple-touch-icon.png", url: "https://turkmedya.radyotvonline.com/turkmedya/ligradyo.stream/playlist.m3u8" },
+            { name: "Radio Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3" },
+            { name: "dinamo.fm fluent", logo: "https://www.dinamo.fm/favicons/dinamo-fluent-favicon.jpg", url: "http://channels.dinamo.fm/fluent-mp3" },
+            { name: "CADENA JOVEN RADIO 107.3 FM", logo: "https://cadenajoven.es/wp-content/uploads/2023/07/LOGO-SOLO-TR-NUEVO-CADENA-JOVEN-144.png", url: "https://antares.dribbcast.com/proxy/cadenajovenradio?mp=/stream" },
+            { name: "FÄ±rat FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10912/;" },
+            { name: "AÃ‡S Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ip169.ozelip.com:10838/" },
+            { name: "Fenomen Dans 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomendans/256/chunks.m3u8" },
+            { name: "Mega Site .", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3RADYO%20MEGAS%C4%B0TE%20=" },
+            { name: "Denge Gundeme", logo: "https://img.icons8.com/color/96/radio.png", url: "http://kesintisizyayin.com:1656/" },
+            { name: "Radyo HakkÄ±n Sesi", logo: "https://mihr.com/Content/images/logo2.png", url: "https://radio.mihr.com/radio/8010/hakkinsesi" },
+            { name: "BatÄ± Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net:10902/" },
+            { name: "TheRockRadio", logo: "https://therock.com.tr/images/favicon.png", url: "https://ssl4.radyotvonline.com/radyohome/therockradio.stream/playlist.m3u8" },
+            { name: "Radyo Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "Veng RADYO", logo: "https://www.vengradyo.com/radyogorsel.jpg", url: "https://live.radyo.in/8012/stream" },
+            { name: "MEGA SÄ°TE", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;stream.mp3" },
+            { name: "Serhat FM 91.5", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.serhatfm.com:9150/stream" },
+            { name: "Erkam Radyo 2nd Stream", logo: "https://play-lh.googleusercontent.com/Hf0NtOQoXmIPWe2Hz8C5nptvA6Hx4QOvPmuE1bOkDhjcV6bJgRZBWAXS3Cjtf64QvD0", url: "https://yayin2.canliyayin.org:10910/stream?" },
+            { name: "Radyo 45lik - 45'lik Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.radyo45lik.com:4545/" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "KÃ¼pe FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://icecast.netmedya.net/kupefm" },
+            { name: "Power Gold TR", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.powerapp.com.tr/powergold/abr/playlist.m3u8" },
+            { name: "Discoland", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/discoland/playlist.m3u8" },
+            { name: "power love", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerlove/abr/playlist.m3u8" },
+            { name: "Vokal Tr", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/radyolanddoksanlar/playlist.m3u8" },
+            { name: "Radyo light", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.radiolight.net:8005/live" },
+            { name: "Fenomen 256", logo: "https://cdn.radyofenomen.com/image/200x200/u/Channels/v2/logo_20.png?v=", url: "https://live.radyofenomen.com/fenomen/256/chunks.m3u8" },
+            { name: "NUR Radyo", logo: "https://www.mihr.com/Content/images/mihrcom.ico", url: "https://canli.hidayetradyolari.com/listen/radyo_nur/radio.mp3" },
+            { name: "FENOMEN AKUSTIK", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenakustik/abr/fenomenakustik/128/chunks.m3u8" },
+            { name: "Radyo Taksi", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyo.in/8006/stream" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Radyo A (Radyo Anadolu Ãœniversitesi)", logo: "https://img.icons8.com/color/96/radio.png", url: "http://canli.radyoa.anadolu.edu.tr:44445/Radyo_A_MP3" },
+            { name: "radio Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.asymedya.com:8020/radio.mp3" },
+            { name: "Emek radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin1.radyohizmeti.com:8585/;" },
+            { name: "Fenerbahce Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://91.232.174.18:8000/Stream" },
+            { name: "Standart.fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/standartfm/playlist.m3u8" },
+            { name: "meteorolojinin sesi", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyomgm.canliyayinda.com/;stream.mp3" },
+            { name: "DanceLand Anthems", logo: "https://like.radio/favicon.ico", url: "https://likeradiostream.com/dancelandanthems" },
+            { name: "Radio Line", logo: "https://radioline.fm/wp-content/uploads/2020/05/radioline_logo.png", url: "https://online.radioline.fm:8443/stream" },
+            { name: "Erkam Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://api-tv5.yayin.com.tr:8002/mp3" },
+            { name: "Erkam Radyo", logo: "https://www.erkamradyo.com/images/mobil.png", url: "https://api-tv5.yayin.com.tr:8002/mp3" },
+            { name: "HaYaTMiX Slow", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo.yayin.com.tr:4090/mp3" },
+            { name: "TRT Memleketim FM", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/34a7a0ae-669e-4449-9f60-ad17563021c8.png", url: "https://radio-trtmemleketimfm.medya.trt.com.tr/master.m3u8" },
+            { name: "https://turkmedya-live.ercdn.net/tv24/tv24.m3u8", logo: "https://img.icons8.com/color/96/radio.png", url: "https://turkmedya-live.ercdn.net/tv24/tv24.m3u8" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "Danceland", logo: "https://like.radio/favicon.ico", url: "https://likeradiostream.com/danceland" },
+            { name: "Gundi Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "http://gundifm.ozelip.com:7830/;" },
+            { name: "a PARA", logo: "https://i.tmgrup.com.tr/apara/site/v1/i/favicon.png", url: "https://trkvz-radyolar.ercdn.net/apararadyo/playlist.m3u8" },
+            { name: "POP HOME", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitalmaster.radyotvonline.net/pophome/playlist.m3u8" },
+            { name: "radyo megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "andromedaradio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/andromedaradio/stream" },
+            { name: "Fenomen KarÄ±ÅŸÄ±k 256", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomenkarisik/256/chunks.m3u8" },
+            { name: "KÄ±yÄ± Caz", logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbYAAABzCAMAAADDhdfxAAAAsVBMVEX///8Ai/8Ah/8Ajf8AifUx//q9f9zuf8Ahf/3/PazP+03f8smP+Qzf8AjP+Cwv9crP8AgP/m8/8Af/85pP9Hqf+Cv/8hmv8AfP/y+v8Akf/M6P+74P/k8v/e7/9ptf+v2P84n//U7P+l0f8AeP/H5P9Zsv9Pp/91wf+GyP8mlf+Y0P+m1/+93P9Cmf9Xs/9ErP99u/9Mov9nr/+iyv96t/9lrP9luf95xP8hoP/D5v9kzvXAAAAKDElEQVR4nO2dCXeiSBCAuUTwiKJGBBQVNInE3DubSf7/D1tMPKqguwt3Mm/DbH3zXt4bsEH9LOijutG068LbP5L17P/63TAVaehHjDlrqwsN86StydrqAmurJaytlrC2WsLaaglrqyWsrZawtlrC2moJa6slrK2WsLZawtpqCWurJaytlrC2WsLaaglrqyWsrZawtlrC2moJa6slrK2WsLZawtpqCWurJaytlrC2WvLF2gIbEFQp4cIS/LupSAVtyaYHGHePNpLGaXP6sdVdXPdPNBP6/HYLFLhufR7bXYMTTr/iY/5p0NriFxNwYW6Pe9qdi8Nm/XLwsWmdWcfj6WaDPv96CQuknxvdlnU8YTj+9Q/550Fqm83B96pb5sI97mp3jrusvbagZ4AXX5LhFvTA0Y2X+HOr2zodxex9yef8w6C02dhamJ6s5dqAoU9tWuSD11+k1OkjUbCxNhJCm910gDUdWRNqC8bAg3VNhFvQgMHZP7yatVGotdlj8LXm1lqocijSpk3PCbf4TXgrZG0USm3ozqPrWQNX6aG2x4M2uwlKGP2Z6uR51QME23N02s7a1Ki0FayFvUJDTBhtsKKSf+kL1clnI/jS3vECzNooFNpcsIrC7vsbF4NRrM2ew3C7UrWgF+CX1nJ9OjNrI5Brc1sh0vZUEiDWpi06oJR5Jz+3DYPtoglPzdrUSLW5rQxKcwTVTIk2+wWFm1sqd2ABr8EZ6A1hbRRSbSmMGd2ZCzoYJdq0LRRurssF91xCbVAva6OQaStYexTdomTagmsUbrJTT6E1sw32sDYKibaFT1uTatNuTVDYikRltUKwXcI9rI1CrK0N28y6g5yckGoLljDcHsRnjlCv2RbuYm0UQm3TDvpKJdbk2rQujFVD3MN1BZvab2gXa6MQaVujWNOl/fhybQE8gvUqKhzB5oVxi/axNgqBtmiJOiKvZfcmhTbtFh4iFHmHfWCWj+uprI2irK1oTV6BV2gL4HCp3iyXjWBN1ejinayNoqQtGiFrz4qcAIU2bQOP4pfDrQcqm1ZW6HBmbRRFbQm2tlRlcqi0DVCHcumrT57hqPamsBdp46QEAQVt8TW0ZvltVVmVNg1mJ+jL4v2xASskWTEYobYL1iYAaQviPqr5Z4p+YI3QFvuKZKDkGux0xsVuS442CqhtnMAxl7wGuFCXVWpzeyCdoZidkKJgK1V6WBsF0Kb3H2GnVKl+V0KpTUtgh3LYgrviF3hnK48tsDYKqA1J2yUaEGXV2oIxDLd+DHYtYLCF5Ssxa6NoFFyhcCvW8AqoteVNMxBTIUgGms1BdcWYl0uyNgqVNt18V5YltAUw7csA4XZHBBtrI1Fq00fKuRSENm2Nwm1x2Gw3UXJkXC7I2ijU2i5KdXMIpc1+Qpnih66QNaqriDIpWRuFWpuVLRRlKW3aHQq3/dWwQt4ya6NQa9N1VTo41DYSaRug3Lv9k49QTcVsiMKZe0koBNpgjcEcyycXktpw7l340b/p9sSZyBDWRiHQNoepdlYmTOntQ1Q7l1z9wvAnV7i7n3WRlHSZl3Z+O4zqjRMKtamlaj6sTvSBh7bFw/msTaKojZjl6SVoHEA6ZTuCtrsPjz2q6vZviQTGcLaKArajLcPRws0lzeVtAIqaNNQRnqYaF34g8gko3msjQJrM/zPyHLHYKPlC1rEO6pos9F46I2Gsov6kjfF2iiQNuvt0CSO4YCYIc5uraRN68ITdG5gsJmyQVjWRoG0LU+NtDasujst4WWykrbBEoUz/JFcSoqwNhKgDc4wwzm6eiis8VXShlNdITgTGcLaKKQzbmawDmiNRI3uatpsnCwLfiXS/k7WRiGflrhGl0lRuxhpk0/S3qDFFk6nu5WWYG0UiknAXTSRSVBXr6jNxrNSDyV8ea8Za6NQaAse4bjYc7kVUFGb9lMUbqqhc9ZGoVopIUFh0izdiqpqi0XhlklvhqyNRrkuSYq6NEp9ylW1aTflcBPeLA+wNgr1cjJX0FtpkKWytqQcbpmk5+UD1kahXrwJjbLoxWn3lbUFqHPkI9gUw3isjYZYKg0u+FLIUT1DG56D+HEo6WjQDtZGQWjDQ2+F+TfVtQV4yTVqfV/WRkGtJxnDlXqsOZJTXRvO1pJ1lh1hbRTk6q146K0lW0+S0IZy74r6S7A2ClJbgOZ9+jCH+AxtboqCbaF+U6yNgl7iOkF5BTCJ+AxtA7h2rzATGcLaKCosKL9Aq5T04BLXlbXhtP+W8rVYm/50zuCR/g9U0ObiobfTkHR1bXbznBWUWRtJladuzC6BNmsJ1mmtqi1CeXfk4wFYG0Wlh6VM4bd+WtSnsjYXPZ2hNP++/HrWRtAzHOvAN5e2gTeWAziMby7C0zZZdtcHMf8wQ6Q+hrvjO/3yx5mf6H9B1D0xlWcJ3IKXbQ45IDHYulX1McK1ZayOuqldflfnfSDmq7DRSk7z//rtMNXowrn3skxk5vcTVHo02x73NPpj6OHLb3tTjGYnidxMcPc0XqtmB2O2x2Az7se3FZ7pxvw7grsfy+VY9gUHY8/zwrRy4B3WRLYc1XJ5zK8y6IV5BXwonumpBU8TwzI82TyczD18aSr7NZEb81GmBT9MK/uLvf0Gps/eMBun447ndVqlK2HyI3favFu3wqFwFYV1Z+gdn3q4433X1LYMx09tbfaS/xg89eOKmH+DvQmHzjwKtCDpeZ7+dzuPjUFraQ3Nu2A3gBYOzfJ07txa5jvO/am/eW5ZluN0epGrRdeOp/t5FJO9W8xZxJt7Y2IdnsdLtSbG+bxZPvRvB9Pmve6s9ivouq1Pz6Ob76zpnQ5y+9lzPv+UZft9+HfWtP1YbWb+5iurPbsaTv6/x2K/48r30J+sfMvqPKSz9/Ya9B7C+GE7jO79d2mnaxTjxcNwu90H3xhn93Qazhzt/f1q7qjW28nPz4m9TfbD6fDzaR+8fw+n0YfU+QwW6Mmd0b3jQPsO9OXz4ePsgeL2R/xa88/HH/MvC48fjmfbbu8eTluvj/dFd/v5H12fX7Orh/vZ0Pt4/Xt8aCnf3Oo0e9vz6MX6fN4v/befS91R8p8MfhjP0s/i4/XjfuJ9rsPt59eL+8vN2fpjth0X73Z2jYb2M4x48o3zD8j9JEnGz1n2x7K9vxLso/fPfm0yX0ffLyO7fXj9uNv71x+/3/+t/j9/9Z8Pe0Wz8Pn1bz/OX8tj9rjezjfL9+H7fmT3eojGv/N62jrfZqHU6dJ7z2uZbcOZYy2/h+xo3+3d2f3p2/1nv//+/G+//fZt/PHzf88mxm/PD/dvP7brj+nd/H64/fPjPv4D+k2Yrw3jf/7PP/M/Cv7f7c/d7v/Aj3vn/wfjyV/Z", url: "https://caz.radioca.st/" },
+            { name: "Starter FM", logo: "https://starterfm.com.au/wp-content/uploads/2020/06/Starter-24-Short-tr-e1726924490144.png", url: "http://10321.cloudrad.io:9054/hd" },
+            { name: "KLAS RADÄ°O TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10929/" },
+            { name: "Radyo Hidayet Ã‡aÄŸÄ±", logo: "https://www.mihr.com/Content/images/mihrcom.ico", url: "https://radio.mihr.com/radio/8000/radio.mp3" },
+            { name: "MaxFM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://live.radyotvonline.com:8090/;" },
+            { name: "KÄ±yÄ± Gece", logo: "https://img.icons8.com/color/96/radio.png", url: "https://gece.radioca.st/stream" },
+            { name: "no name", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "Radyo KarabalÄ±", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyokarabali.ozelip.com:9884/;" },
+            { name: "KÄ±yÄ± Gece", logo: "https://img.icons8.com/color/96/radio.png", url: "https://gece.radioca.st/" },
+            { name: "Radiosilenci", logo: "https://ik.imagekit.io/7ftrkrun31/enacast/logos/2015/12/16/endirecte.jpg?tr=h-400,fo-auto", url: "https://enacast.com/radiosilenci/streams/HD" },
+            { name: "literal", logo: "https://img.icons8.com/color/96/radio.png", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/LITERAL128AAC.aac" },
+            { name: "Mega Site", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.netradyom.com:7900/;" },
+            { name: "Radio Life Kayseri", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin2.canliyayin.org:10990/;*.mp3" },
+            { name: "Erkam Radyo", logo: "https://www.erkamradyo.com/images/logos/logo.png", url: "https://api-tv5.yayin.com.tr:8002/mp3" },
+            { name: "Yeni Radyo Nostaljinin Sesi", logo: "https://img.icons8.com/color/96/radio.png", url: "http://51.255.235.165:26113/stream" },
+            { name: "Engelliler radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.zeno.fm/iuqovax9ftsvv" },
+            { name: "Radio Wanderlust", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyo.yayin.com.tr:5898/" },
+            { name: "POWER XL TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://listen.powerapp.com.tr/powerextralounge/abr/powerextralounge/96/playlist.m3u8" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "POP LAND", logo: "https://img.icons8.com/color/96/radio.png", url: "https://moondigitaledge.radyotvonline.net/popland/playlist.m3u8" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "å¹¸ç¦å»£æ’­é›»å°TR Radio FM102.5", logo: "https://www.tr-radio.com/images/all/logo--white.svg", url: "http://61.218.61.251:8080/" },
+            { name: "Bayram FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net/3442/stream/;stream.mp3" },
+            { name: "KÄ±yÄ± TÃ¼rkÃ§e", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyiturk.radioca.st/" },
+            { name: "KÄ°SS LOVE RADYO TURKEY", logo: "https://img.icons8.com/color/96/radio.png", url: "https://anadolu.liderhost.com.tr:10964/" },
+            { name: "dinamo.fm sleep", logo: "https://www.dinamo.fm/favicons/dinamo-sleep-favicon.jpg", url: "http://channels.dinamo.fm/sleep-mp3" },
+            { name: "trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "S1LHOUTTE ANKARA HAVALARI", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/30/" },
+            { name: "Mega Ask FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://embed.tawk.to/_s/v4/assets/audio/chat_sound.mp3" },
+            { name: "Radyo Fenomen Dans", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.radyofenomen.com/fenomendans/abr/playlist.m3u8" },
+            { name: "Ostim Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.netradyom.com/radio/8010/radio.mp3%22" },
+            { name: "Radyo Esenler", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin2.canliyayin.org:10978/;" },
+            { name: "Serhat FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.serhatfm.com:9150/stream" },
+            { name: "Number One JAZZ", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e3e06878b9_1/playlist.m3u8" },
+            { name: "Pal DoÄŸa", logo: "https://img.icons8.com/color/96/radio.png", url: "http://shoutcast.radyogrup.com:1040/;stream/1" },
+            { name: "Radyo Hayat", logo: "https://img.icons8.com/color/96/radio.png", url: "http://live4.radyotvonline.com:9450/" },
+            { name: "Max Fm 95.8 'Maximum Music'", logo: "https://img.icons8.com/color/96/radio.png", url: "https://maxfm.radyotvonline.net/stream/164/;" },
+            { name: "Ã–zel FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ozelfm.80.yayin.com.tr/;stream/1" },
+            { name: "Apacik Radyo", logo: "https://apacikradyo.com.tr/logo1024", url: "http://stream.34bit.net/ar.aac" },
+            { name: "playdanceradio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyo1.radyo-dinle.tc/playdanceradio/stream" },
+            { name: "Radyo Trio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://radyotrio.radyotvonline.net/radyotrio" },
+            { name: "Power Love", logo: "https://www.powerapp.com.tr/i/favicov2/apple-icon-120x120.png?v=825", url: "https://listen.powerapp.com.tr/plove/love.smil/playlist.m3u8" },
+            { name: "Radyo Megasite", logo: "https://img.icons8.com/color/96/radio.png", url: "http://mega.netradyom.com:7900/radio.mp3" },
+            { name: "Radyo ArkadaÅŸ", logo: "https://img.icons8.com/color/96/radio.png", url: "https://ssl120.radyotelekom.com.tr/9998/stream" },
+            { name: "NUMBER ONE WORLD", logo: "https://img.icons8.com/color/96/radio.png", url: "https://n10101m.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2f95dcb16_1/playlist.m3u8" },
+            { name: "RadyoVoyage", logo: "https://img.icons8.com/color/96/radio.png", url: "http://voyagesc.radyotvonline.com/" },
+            { name: "LALEGÃœL FM", logo: "https://img.icons8.com/color/96/radio.png", url: "https://icecast.netmedya.net/lalegulfm" },
+            { name: "Show radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://edge1.radyotvonline.net/shoutcast/play/showradyo" },
+            { name: "KÄ±yÄ± TÃ¼rkÃ§e", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyiturk.radioca.st/stream" },
+            { name: "KIYI Muzik", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyi.radioca.st/stream" },
+            { name: "Radyo Yalova", logo: "https://img.icons8.com/color/96/radio.png", url: "https://studio25.radiolize.com/radio/8200/radio.mp3" },
+            { name: "Bodrum Fm", logo: "https://img.icons8.com/color/96/radio.png", url: "https://live.bodrumfm.org/stream.mp3" },
+            { name: "MPL Radyo", logo: "https://www.mihr.com/Content/images/mihrcom.ico", url: "https://canli.hidayetradyolari.com/listen/mpl_radyo/radio.mp3" },
+            { name: "oyunpiyat", logo: "https://img.icons8.com/color/96/radio.png", url: "https://yayin.hostwin.net/8888/stream%20%20oyunpiyatfm" },
+            { name: "FIND A CUTÄ°E <3", logo: "https://stream.zeno.fm/lyl2uv7fcvovv", url: "https://stream.zeno.fm/lyl2uv7fcvovv" },
+            { name: "KÄ±yÄ± Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "https://kiyi.radioca.st/stream" },
+            { name: "RÃ dio Desvern", logo: "https://ik.imagekit.io/7ftrkrun31/enacast/logos/2023/03/08/icona_radio.jpg?tr=h-400,fo-auto", url: "https://enacast.com/radiodesvern/streams/HD" },
+            { name: "Radyo 90s", logo: "https://img.icons8.com/color/96/radio.png", url: "http://37.247.98.8/stream/166/" },
+            { name: "Radyo Maranata", logo: "https://img.icons8.com/color/96/radio.png", url: "http://medya.radyomaranata.com:8005/live" },
+            { name: "X Radio", logo: "https://img.icons8.com/color/96/radio.png", url: "http://stream.xradio.com.tr:8770/" },
+            { name: "Sezen Radyo", logo: "https://img.icons8.com/color/96/radio.png", url: "http://radyo1.radyo-dinle.tc:8038/" },
+            { name: "Giresun FM", logo: "https://img.icons8.com/color/96/radio.png", url: "http://yayin.canliyayin.org:9482/;" },
+            { name: "TRT Ã‡ukurova", logo: "https://trt-public-static.trt.com.tr/eradyo/public/dm_upload/modul2/12de3bf5-2267-4eea-9e1c-22cec7288294.png", url: "https://radio-trtcukurova.medya.trt.com.tr/master.m3u8" },
+            { name: "Radio Glamorize", logo: "https://radioglamorize.com/wp-content/uploads/2020/05/cropped-sdiavatar2-180x180.png", url: "https://live.radioglamorize.com/stream1" },
+            { name: "AFN 360 Incirlik", logo: "https://img.icons8.com/color/96/radio.png", url: "http://25503.live.streamtheworld.com:3690/AFNE_ICK_SC" },
+            { name: "DadaÅŸ Fm Erzurum", logo: "https://img.icons8.com/color/96/radio.png", url: "https://sslyayin.netyayin.net:8084/stream/;stream.mp3" },
+            { name: "X Radio", logo: "https://img.icons8.com/color/96/radio.png", url: "https://stream.xradio.com.tr:8770/stream" },
+            { name: "Radyo Ender", logo: "https://img.icons8.com/color/96/radio.png", url: "https://embed.tawk.to/_s/v4/assets/audio/chat_sound.mp3" }
+        ];
+
+        // DOM ELEMENTE
+        const player = document.getElementById('player');
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const currentStation = document.getElementById('current-station');
+        const currentLogo = document.getElementById('current-logo');
+        const playerStatus = document.getElementById('player-status');
+        const loading = document.getElementById('loading');
+        const volumeSlider = document.getElementById('volume');
+        const turkishContainer = document.getElementById('turkish-stations');
+        const turkishCounter = document.getElementById('turkish-counter');
+        const totalStats = document.getElementById('total-stats');
+        const searchInput = document.getElementById('search-input');
+
+        // VARIABLEN
+        let currentPlaying = null;
+        let currentStationIndex = null;
+
+        // INITIALISIERUNG
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("TÃ¼rk Radio geladen - Starte Initialisierung...");
+            
+            // Sender rendern
+            renderStations(turkishStations, turkishContainer);
+            
+            // Counter aktualisieren
+            updateCounter();
+            
+            // Event Listener setzen
+            setupEventListeners();
+            
+            // Audio Player initialisieren
+            audioPlayer.volume = 0.5;
+            
+            console.log("TÃ¼rk Radio Initialisierung abgeschlossen!");
+            console.log("TÃ¼rkische Sender:", turkishStations.length);
+        });
+
+        // SENDER RENDERN
+        function renderStations(stations, container) {
+            container.innerHTML = '';
+            
+            if (stations.length === 0) {
+                container.innerHTML = '<div class="no-results">âŒ HiÃ§ radyo istasyonu bulunamadÄ±</div>';
+                return;
+            }
+            
+            stations.forEach((station, index) => {
+                const card = document.createElement('div');
+                card.className = 'station-card';
+                card.dataset.index = index;
+                
+                const isPlaying = currentPlaying === station.url && !audioPlayer.paused;
+                
+                card.innerHTML = `
+                    <img src="${station.logo || 'https://img.icons8.com/color/96/radio.png'}" 
+                         alt="${station.name}"
+                         onerror="this.src='https://img.icons8.com/color/96/radio.png'">
+                    <div class="station-info">
+                        <div class="station-name">${station.name}</div>
+                        <div class="station-country">
+                            ðŸ‡¹ðŸ‡· TÃ¼rkiye
+                        </div>
+                    </div>
+                    <button class="play-btn ${isPlaying ? 'playing' : ''}">
+                        ${isPlaying ? 'â¸ï¸' : 'â–¶'}
+                    </button>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Event Listener fÃ¼r Play Buttons
+            container.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.station-card');
+                    const index = parseInt(card.dataset.index);
+                    playStation(index);
+                });
+            });
+        }
+
+        // SENDER ABSPIELEN
+        function playStation(index) {
+            const station = turkishStations[index];
+            
+            // Wenn derselbe Sender bereits spielt, pausieren
+            if (currentPlaying === station.url && !audioPlayer.paused) {
+                pauseStation();
+                return;
+            }
+            
+            // Player anzeigen
+            player.style.display = 'flex';
+            currentStation.textContent = station.name;
+            currentLogo.src = station.logo || 'https://img.icons8.com/color/96/radio.png';
+            playerStatus.textContent = 'BaÄŸlanÄ±yor...';
+            playBtn.textContent = 'â¸ï¸';
+            loading.style.display = 'block';
+            
+            // Aktuelle Werte speichern
+            currentPlaying = station.url;
+            currentStationIndex = index;
+            
+            // Audioquelle setzen
+            audioPlayer.src = station.url;
+            
+            // Abspielen
+            audioPlayer.play()
+                .then(() => {
+                    playerStatus.textContent = 'Ã‡alÄ±yor';
+                    loading.style.display = 'none';
+                    updatePlayButtons();
+                })
+                .catch(error => {
+                    console.error("Oynatma hatasÄ±:", error);
+                    playerStatus.textContent = 'Oynatma hatasÄ±';
+                    playBtn.textContent = 'â–¶';
+                    loading.style.display = 'none';
+                    currentPlaying = null;
+                });
+            
+            updatePlayButtons();
+        }
+
+        // PAUSIEREN
+        function pauseStation() {
+            audioPlayer.pause();
+            playBtn.textContent = 'â–¶';
+            playerStatus.textContent = 'DuraklatÄ±ldÄ±';
+            currentPlaying = null;
+            updatePlayButtons();
+        }
+
+        // PLAY BUTTONS AKTUALISIEREN
+        function updatePlayButtons() {
+            // Alle Play Buttons zurÃ¼cksetzen
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.textContent = 'â–¶';
+                btn.classList.remove('playing');
+            });
+            
+            // Aktuellen Play Button markieren
+            if (currentPlaying && !audioPlayer.paused) {
+                const selector = `.station-card[data-index="${currentStationIndex}"] .play-btn`;
+                const currentBtn = document.querySelector(selector);
+                if (currentBtn) {
+                    currentBtn.textContent = 'â¸ï¸';
+                    currentBtn.classList.add('playing');
+                }
+            }
+        }
+
+        // SUCHFUNKTION
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            
+            // TÃ¼rkische Sender filtern
+            const filteredTurkish = turkishStations.filter(station => 
+                station.name.toLowerCase().includes(query)
+            );
+            
+            // Gefilterte Sender anzeigen
+            renderStations(filteredTurkish, turkishContainer);
+            
+            // Counter aktualisieren
+            updateCounter(query, filteredTurkish.length);
+        }
+
+        // COUNTER AKTUALISIEREN
+        function updateCounter(query = '', count = null) {
+            const totalCount = count !== null ? count : turkishStations.length;
+            
+            if (query) {
+                turkishCounter.textContent = `${totalCount} tÃ¼rk radyo istasyonu bulundu`;
+            } else {
+                turkishCounter.textContent = `${totalCount} tÃ¼rk radyo istasyonu mevcut`;
+            }
+            
+            totalStats.textContent = `${totalCount} Radyo | ðŸ‡¹ðŸ‡· TÃ¼rk Radio`;
+        }
+
+        // EVENT LISTENER SETUP
+        function setupEventListeners() {
+            // Play/Pause Button
+            playBtn.addEventListener('click', function() {
+                if (audioPlayer.paused) {
+                    if (audioPlayer.src) {
+                        audioPlayer.play();
+                        playBtn.textContent = 'â¸ï¸';
+                        playerStatus.textContent = 'Ã‡alÄ±yor';
+                        updatePlayButtons();
+                    }
+                } else {
+                    pauseStation();
+                }
+            });
+            
+            // LautstÃ¤rke
+            volumeSlider.addEventListener('input', function(e) {
+                audioPlayer.volume = e.target.value;
+            });
+            
+            // Suche
+            searchInput.addEventListener('input', performSearch);
+            
+            // Audio Events
+            audioPlayer.addEventListener('playing', function() {
+                playerStatus.textContent = 'Ã‡alÄ±yor';
+                loading.style.display = 'none';
+            });
+            
+            audioPlayer.addEventListener('waiting', function() {
+                playerStatus.textContent = 'YÃ¼kleniyor...';
+                loading.style.display = 'block';
+            });
+            
+            audioPlayer.addEventListener('error', function(e) {
+                playerStatus.textContent = 'YayÄ±n hatasÄ±';
+                playBtn.textContent = 'â–¶';
+                loading.style.display = 'none';
+                currentPlaying = null;
+                updatePlayButtons();
+            });
+            
+            audioPlayer.addEventListener('ended', function() {
+                playerStatus.textContent = 'Bitti';
+                playBtn.textContent = 'â–¶';
+                currentPlaying = null;
+                updatePlayButtons();
+            });
+        }
+    </script>
+</body>
+</html>
